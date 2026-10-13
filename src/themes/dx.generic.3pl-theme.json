@@ -1,0 +1,30 @@
+{
+	"items": [
+		{
+			"key": "$base-accent",
+			"value": "rgba(210, 166, 110, 1)"
+		},
+		{
+			"key": "$base-font-family",
+			"value": "'Inter', sans-serif"
+		},
+		{
+			"key": "$base-border-color",
+			"value": "rgba(226, 232, 240, 1)"
+		},
+		{
+			"key": "$base-text-color",
+			"value": "rgba(88, 88, 88, 1)"
+		},
+		{
+			"key": "$pager-page-selected-bg",
+			"value": "rgba(222, 222, 222, 1)"
+		}
+	],
+	"baseTheme": "generic.light",
+	"outputColorScheme": "3pl-theme",
+	"makeSwatch": false,
+	"version": "21.1.5",
+	"widgets": [],
+	"removeExternalResources": false
+}

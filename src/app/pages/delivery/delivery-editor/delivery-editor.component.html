@@ -1,0 +1,490 @@
+<div class="dx-card responsive-paddings">
+
+	<div class="page-header">
+		<h2>Delivery</h2>
+		<h5>Details Of Delivery</h5>
+		<dx-button (onClick)="backToDelivery()" type="back">
+		</dx-button>
+	</div>
+
+	<br/>
+
+	<div *ngIf="canOperate()" class="buttons-wrapper">
+		<dx-button
+			icon="fieldchooser"
+			stylingMode="outlined"
+			type="normal"
+			[visible]="canOperate()"
+			[disabled]="!canMarkAsProcessing()"
+			(onClick)="processing($event)"
+			text="Mark As Process">
+		</dx-button>
+		<dx-button
+			icon="car"
+			stylingMode="outlined"
+			type="default"
+			[visible]="canOperate()"
+			[disabled]="!canMarkAsDispatch()"
+			(onClick)="dispatch($event)"
+			text="Dispatch">
+		</dx-button>
+		<dx-button
+			icon="todo"
+			stylingMode="outlined"
+			type="success"
+			[visible]="canOperate()"
+			[disabled]="!canMarkAsComplete()"
+			(onClick)="markAsComplete($event)"
+			text="Complete">
+		</dx-button>
+		<dx-button
+			icon="revert"
+			stylingMode="outlined"
+			type="danger"
+			[visible]="canOperate()"
+			[disabled]="!canMarkAsReturn()"
+			(onClick)="return($event)"
+			text="Return">
+		</dx-button>
+		<dx-button
+			icon="trash"
+			stylingMode="outlined"
+			type="danger"
+			[visible]="canOperate()"
+			[disabled]="!canMarkAsProcessing()"
+			(onClick)="delete($event)"
+			text="Delete">
+		</dx-button>
+		<dx-button
+			class="waybill-action"
+			icon="print"
+			stylingMode="outlined"
+			type="default"
+			[visible]="canOperate()"
+			[disabled]="!canPrintWayBill()"
+			(onClick)="wayBill($event)"
+			text="Way Bill">
+		</dx-button>
+	</div>
+
+	<br/><br/>
+
+	<form (submit)="handleSubmit($event)">
+		<dx-form [formData]="delivery" [readOnly]="!canEdit" id="form" labelLocation="top">
+
+			<dxi-item itemType="group" [colCount]="2">
+				<dxi-item [colCount]="2" [colSpan]="4" caption="General Details" itemType="group">
+
+					<dxi-item [colSpan]="2" dataField="deliveryNo"
+							  [editorOptions]="{ readOnly: true }"
+							  [visible]="delivery.id !=0"></dxi-item>
+					<dxi-item [colSpan]="2" dataField="created" editorType="dxDateBox"
+							  [editorOptions]="{ dataType:'date', format: 'shortDateShortTime', readOnly: true }"
+							  [visible]="delivery.id !=0"></dxi-item>
+					<dxi-item [colSpan]="2" dataField="deliveryStatus"
+							  [visible]="delivery.id !=0"
+							  [editorOptions]="{ dataSource: metaData.deliveryStatus, displayExpr: 'name', valueExpr: 'id', readOnly: true }"
+							  [isRequired]="true"
+							  [label]="{ text: 'Delivery Status' }" editorType="dxSelectBox">
+					</dxi-item>
+					<dxi-item [visible]="!isSupplier()" [colSpan]="2"
+							  [editorOptions]="{ dataSource: supplierStore, displayExpr: 'supplierName', valueExpr: 'id', searchEnabled: true, searchExpr: ['code', 'supplierName'],
+				  fieldTemplate: 'supplierField', itemTemplate: 'supplierField'  }"
+							  [isRequired]="true"
+							  [label]="{ text: 'Supplier' }" dataField="supplierId" editorType="dxLookup">
+					</dxi-item>
+
+					<!-- This section is only for supplier view -->
+					<dxi-item [visible]="isSupplier()" [colSpan]="2"
+							  [editorOptions]="{ dataSource: supplierStore, displayExpr: 'supplierName', valueExpr: 'id', readOnly: true, searchEnabled: false, searchExpr: ['code', 'supplierName'],
+				  fieldTemplate: 'supplierField', itemTemplate: 'supplierField'  }"
+							  [label]="{ text: 'Supplier' }" dataField="supplierId" editorType="dxLookup">
+					</dxi-item>
+		     		<!-- end -->
+
+					<dxi-item [visible]="!isSupplier()" [colSpan]="2"
+							  [editorOptions]="{ dataSource: metaData.deliveryTypes, displayExpr: 'name', valueExpr: 'id' }"
+							  [isRequired]="true"
+							  [label]="{ text: 'Type' }" dataField="type" editorType="dxSelectBox">
+					</dxi-item>
+
+					<!-- This section is only for supplier view -->
+					<dxi-item [visible]="isSupplier()" [colSpan]="2"
+							  [editorOptions]="{ dataSource: metaData.deliveryTypes, displayExpr: 'name', valueExpr: 'id', readOnly: true }"
+							  [label]="{ text: 'Type' }" dataField="type" editorType="dxSelectBox">
+		  			</dxi-item>
+					<!-- end -->
+					
+					<dxi-item [colSpan]="2"
+							  [isRequired]="true"
+							  [editorOptions]="{ disabledDates: disabledDates, dateSerializationFormat: 'yyyy-MM-dd' }"
+							  [label]="{ text: 'Delivery Date' }" dataField="deliveryDate" editorType="dxDateBox">
+					</dxi-item>
+				</dxi-item>
+				<dxi-item [colCount]="2" [colSpan]="4" caption="Delivery Customer Details" itemType="group">
+					<dxi-item [editorOptions]="{inputAttr: { autocomplete: 'first-name-field' }}"
+							  [isRequired]="true" dataField="deliveryCustomer.firstName">
+						<dxo-label text="First Name"></dxo-label>
+					</dxi-item>
+					<dxi-item [editorOptions]="{inputAttr: { autocomplete: 'last-name-field' }}"
+							  dataField="deliveryCustomer.lastName">
+						<dxo-label text="Last Name"></dxo-label>
+					</dxi-item>
+					<dxi-item [editorOptions]="{inputAttr: { autocomplete: 'address-line1-field' }}"
+							  [isRequired]="true" dataField="deliveryCustomer.addressLine1">
+						<dxo-label text="Address Line 1"></dxo-label>
+					</dxi-item>
+					<dxi-item [editorOptions]="{inputAttr: { autocomplete: 'address-line2-field' }}"
+							  [isRequired]="true" dataField="deliveryCustomer.addressLine2">
+						<dxo-label text="Address Line 2"></dxo-label>
+					</dxi-item>
+
+					<dxi-item [colSpan]="1" [editorOptions]="{ dataSource: cityStore, displayExpr: 'cityName',
+									valueExpr: 'id', searchEnabled: true, searchExpr: ['cityName']}"
+							  [isRequired]="true"
+							  [label]="{ text: 'City' }" dataField="deliveryCustomer.cityId" editorType="dxLookup">
+					</dxi-item>
+
+					<dxi-item [editorOptions]="{inputAttr: { autocomplete: 'postal-code-field' }}"
+							  dataField="deliveryCustomer.postalCode">
+						<dxo-label text="Postal Code"></dxo-label>
+					</dxi-item>
+
+					<dxi-item [editorOptions]="{inputAttr: { autocomplete: 'mobile-field' },  mask : '0000000000',
+								maskInvalidMessage : 'Mobile number is invalid'}"
+							  [isRequired]="true" dataField="deliveryCustomer.mobile">
+						<dxo-label text="Mobile"></dxo-label>
+					</dxi-item>
+
+					<dxi-item [editorOptions]="{inputAttr: { autocomplete: 'phone-field' }, mask : '0000000000',
+								maskInvalidMessage : 'Phone number is invalid'}"
+							  dataField="deliveryCustomer.phone">
+						<dxo-label text="Phone"></dxo-label>
+					</dxi-item>
+				</dxi-item>
+			</dxi-item>
+
+			<div *dxTemplate="let item of 'supplierField'">
+				<div>{{item?.code}} - {{item?.supplierName}}</div>
+			</div>
+
+			<dxi-item [colSpan]="4" caption="Delivery Items" itemType="group">
+				<p class="shortcut-hint">Press <span>Alt + A</span> For Add New Item</p>
+				<dxi-item>
+					<dx-data-grid #dxDataGridDeliveryItems (onRowValidating)="onRowValidating($event)"
+								  [dataSource]="delivery.deliveryItems"
+								  [rowAlternationEnabled]="true" [showBorders]="true"
+								  (keyup)="onGridKeyUp($event)"
+								  (onEditorPreparing)="onEditorPreparing($event, delivery)">
+						<dxo-editing
+							[allowAdding]="canEdit"
+							[allowDeleting]="canEdit"
+							[allowUpdating]="canEdit"
+							mode="cell">
+						</dxo-editing>
+						<dxi-column caption="Product Name" dataField="productId">
+							<dxi-validation-rule message="Product is required" type="required"></dxi-validation-rule>
+							<dxo-lookup *ngIf="delivery.supplierId"
+								[dataSource]="{ store: productStore, filter: [['supplierId', '=', delivery.supplierId], ['active', '=', true]] }"
+								displayExpr="name"
+								valueExpr="id">
+							</dxo-lookup>
+						</dxi-column>
+						<dxi-column *ngIf="canEdit" [allowEditing]="false" [width]="200"
+									caption="Available Stock Quantity" dataType="total" dataField="availableStock">
+								</dxi-column>
+						<dxi-column [width]="200" dataField="quantity" dataType="number">
+							<dxi-validation-rule message="Quantity is required" type="required"></dxi-validation-rule>
+						</dxi-column>
+						<dxi-column [width]="200" dataField="unitCost" dataType="number">
+							<dxi-validation-rule message="Unit Cost is required" type="required"></dxi-validation-rule>
+						</dxi-column>
+						<dxi-column [allowEditing]="false" [calculateCellValue]='calcualteTotal' [width]="200" alignment="right"
+									caption="Total" dataType="total" name="total"></dxi-column>
+						<dxo-summary>
+							<dxi-total-item
+								alignment="right"
+								column="quantity"
+								displayFormat="Quantity Total : {0}"
+								summaryType="sum">
+							</dxi-total-item>
+							<dxi-total-item
+								alignment="right"
+								column="total"
+								displayFormat="Total : {0}"
+								summaryType="sum">
+							</dxi-total-item>
+						</dxo-summary>
+					</dx-data-grid>
+				</dxi-item>
+			</dxi-item>
+
+			<dxi-item [colCount]="2" [colSpan]="2"  [visible]="!isSupplier()" caption="Tracking Numbers" itemType="group">
+				<dx-button stylingMode="outlined"
+						   icon="save"
+						   [visible]="delivery.deliveryStatus == 1 && canOperate()"
+						   text="Save Changes"
+						   (onClick)="onTrackingSaveChanges($event)"
+						   type="success">
+				</dx-button>
+				<br *ngIf="delivery.deliveryStatus == 1"/><br *ngIf="delivery.deliveryStatus == 1"/>
+				<dx-data-grid
+							  [dataSource]="delivery.deliveryTrackings"
+							  [rowAlternationEnabled]="true" [showBorders]="true"
+							  class="wide-card"
+							  (onSelectionChanged)="selectionChanged($event)"
+							  [repaintChangesOnly]="true"
+							  (onContentReady)="contentReady($event)" 
+							  >
+					<dxo-selection mode="single"></dxo-selection>		  
+					<dxi-column [allowSorting]="false"  dataField="trackingNumber">
+					</dxi-column>
+					<dxi-column dataField="status" [width]="200">
+						<dxo-lookup
+							[dataSource]="metaData.trackingStatus"
+							displayExpr="name"
+							valueExpr="id">
+						</dxo-lookup>
+					</dxi-column>
+					<dxo-master-detail [enabled]="false" template="detail"></dxo-master-detail>
+					<div *dxTemplate="let tracking of 'detail'">
+						<div class="master-detail-caption">Tracking Number : {{tracking.data.trackingNumber}}</div>
+						<br/>
+						<dx-button
+							icon="airplane"
+							stylingMode="outlined"
+							type="default"
+							(onClick)="showTrackingDetails($event, tracking.data.trackingNumber)"
+							text="View Tracking Details">
+						</dx-button>
+						<br/>
+						<br/>
+						<dx-data-grid [dataSource]="tracking.data.deliveryTrackingItems" [rowAlternationEnabled]="true"
+							[repaintChangesOnly]="true" [showBorders]="true"
+							(onEditorPreparing)="overrideOnValueChanged($event, tracking.data.trackingNumber)">
+							<dxo-editing
+								[allowAdding]="false"
+								[allowDeleting]="false"
+								[allowUpdating]="delivery.deliveryStatus == 1"
+								mode="cell">
+							</dxo-editing>
+							<dxi-column [allowEditing]="false" caption="Product Name" dataField="productId">
+								<dxi-validation-rule message="Product is required" type="required"></dxi-validation-rule>
+								<dxo-lookup
+									[dataSource]="{ store: productStore, filter: [['supplierId', '=', delivery.supplierId], ['active', '=', true]] }"
+									displayExpr="name"
+									valueExpr="id">
+								</dxo-lookup>
+							</dxi-column>
+							<dxi-column [width]="120" dataField="quantity" dataType="number">
+								<dxi-validation-rule message="Quantity is required" type="required"></dxi-validation-rule>
+							</dxi-column>
+							<dxi-column [allowEditing]="false" [width]="120" dataField="unitCost" dataType="number">
+								<dxi-validation-rule message="Unit Cost is required" type="required"></dxi-validation-rule>
+							</dxi-column>
+							<dxi-column [allowEditing]="false" [calculateCellValue]='calcualteTotal' [width]="120" alignment="right"
+										caption="Total" dataType="total" name="total"></dxi-column>
+						</dx-data-grid>
+					</div>
+				</dx-data-grid>
+			</dxi-item>
+
+			<dxi-item [buttonOptions]="{ text: 'Save Changes', useSubmitBehavior: true,
+				icon: 'save', type: 'success', visible: canEdit }" [colSpan]="4"
+					  class="btn-save-product"
+					  itemType="button">
+			</dxi-item>
+		</dx-form>
+	</form>
+
+	<dx-popup
+		[width]="500"
+		[height]="'auto'"
+		[showTitle]="true"
+		title="Delivery Processing"
+		[dragEnabled]="false"
+		[closeOnOutsideClick]="false"
+		[showCloseButton]="true"
+		[(visible)]="processingPopupVisible">
+		<div *dxTemplate="let data of 'content'">
+			<p>
+				Enter required tracking numbers count for dispatch the shipment
+			</p>
+			<br/>
+			<form (submit)="handleProcessingForm($event)">
+				<dx-form [showColonAfterLabel]="true" [formData]="processingFormData" labelLocation="top">
+					<dxi-item dataField="requiredNumberOfTrackingNumber">
+						<dxi-validation-rule type="required"
+											 message="Required Number of tracking numbers is required">
+						</dxi-validation-rule>
+						<dxi-validation-rule type="numeric"
+											 message="Required number of tracking numbers should be numeric">
+						</dxi-validation-rule>
+					</dxi-item>
+					<dxi-item
+						itemType="empty"
+						[colSpan]="2">
+					</dxi-item>
+					<dxi-item
+						itemType="button"
+						[buttonOptions]="{ text: 'Processing', useSubmitBehavior: true }">
+					</dxi-item>
+				</dx-form>
+			</form>
+		</div>
+	</dx-popup>
+
+	<dx-popup
+		[width]="500"
+		[height]="'auto'"
+		[showTitle]="true"
+		title="Dispatch"
+		[dragEnabled]="false"
+		[closeOnOutsideClick]="false"
+		[showCloseButton]="true"
+		[(visible)]="dispatchPopupVisible">
+		<div *dxTemplate="let data of 'content'">
+			<form (submit)="handleDispatchForm($event)">
+				<dx-form [formData]="dispatchFormData" labelLocation="top">
+					<dxi-item [colSpan]="2"
+							  [editorOptions]="{ dataSource: warehouseStore, displayExpr: 'name', valueExpr: 'id', searchEnabled: true, searchExpr: ['code', 'name'],
+							fieldTemplate: 'warehouseField', itemTemplate: 'warehouseField'}"
+							  [isRequired]="true"
+							  [label]="{ text: 'Warehouse' }" dataField="wareHouseId" editorType="dxLookup">
+					</dxi-item>
+					<dxi-item
+						itemType="empty"
+						[colSpan]="2">
+					</dxi-item>
+					<dxi-item
+						itemType="button"
+						[buttonOptions]="{ text: 'Dispatch', useSubmitBehavior: true }">
+					</dxi-item>
+					<div *dxTemplate="let item of 'warehouseField'">
+						<div>{{item?.code}} - {{item?.name}}</div>
+					</div>
+				</dx-form>
+			</form>
+		</div>
+	</dx-popup>
+
+	<dx-popup
+		[width]="500"
+		[height]="'auto'"
+		[showTitle]="true"
+		title="Complete Delivery"
+		[dragEnabled]="false"
+		[closeOnOutsideClick]="false"
+		[showCloseButton]="true"
+		[(visible)]="completePopupVisible">
+		<div *dxTemplate="let data of 'content'">
+			<p class="popup-message">Select the completed tracking numbers</p>
+			<br/>
+			<form (submit)="handleComplete($event)">
+				<dx-form #completeForm [formData]="completeFormData" labelLocation="left">
+					<dxi-item
+						*ngFor="let tracking of DispatchedTrackings" [dataField]="tracking.trackingNumber"
+						editorType="dxCheckBox">
+					</dxi-item>
+
+					<dxi-item
+						itemType="empty"
+						[colSpan]="2">
+					</dxi-item>
+					<dxi-item
+						itemType="button"
+						[buttonOptions]="{ text: 'Complete', useSubmitBehavior: true }">
+					</dxi-item>
+				</dx-form>
+			</form>
+		</div>
+	</dx-popup>
+
+	<dx-popup
+		[width]="500"
+		[height]="'auto'"
+		[showTitle]="true"
+		title="Return Delivery"
+		[dragEnabled]="false"
+		[closeOnOutsideClick]="false"
+		[showCloseButton]="true"
+		[(visible)]="returnPopupVisible">
+		<div *dxTemplate="let data of 'content'">
+			<form (submit)="handleReturnForm($event)">
+				<p class="popup-message">Enter your note for return the delivery</p>
+				<br/>
+				<dx-form #returnForm [showColonAfterLabel]="true" [formData]="returnFormData" labelLocation="left">
+					<dxi-item
+						*ngFor="let tracking of ReturnTrackings" [dataField]="tracking.trackingNumber"
+						editorType="dxCheckBox">
+					</dxi-item>
+					<dxi-item dataField="note" editorType="dxTextArea">
+						<dxi-validation-rule type="required"
+											 message="Note is required">
+						</dxi-validation-rule>
+					</dxi-item>
+					<dxi-item
+						itemType="empty"
+						[colSpan]="2">
+					</dxi-item>
+					<dxi-item
+						itemType="button"
+						[buttonOptions]="{ text: 'Return', useSubmitBehavior: true }">
+					</dxi-item>
+				</dx-form>
+			</form>
+		</div>
+	</dx-popup>
+
+	<dx-popup
+		[width]="900"
+		[height]="'auto'"
+		[showTitle]="true"
+		title="Tracking Details"
+		[dragEnabled]="false"
+		[closeOnOutsideClick]="false"
+		[showCloseButton]="true"
+		readonly="true"
+		[(visible)]="trackingDetailsPopupVisible">
+		<div *dxTemplate="let data of 'content'">
+			<dx-data-grid
+				[dataSource]="trackingDetailsDataSource"
+				[columnAutoWidth]="true"
+				[columnHidingEnabled]="true"
+				[rowAlternationEnabled]="true"
+				[showBorders]="true">
+				<dxo-export [enabled]="true"></dxo-export>
+				<dxo-paging [pageSize]="10"></dxo-paging>
+				<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+				<dxo-filter-row [visible]="true"></dxo-filter-row>
+				<dxi-column dataField="statusDate" dataType="datetime"></dxi-column>
+				<dxi-column dataField="hub"></dxi-column>
+				<dxi-column dataField="status"></dxi-column>
+			</dx-data-grid>
+		</div>
+	</dx-popup>
+
+	<dx-popup
+		[width]="500"
+		[height]="'auto'"
+		[showTitle]="true"
+		title="Delivery Deletion"
+		[dragEnabled]="false"
+		[closeOnOutsideClick]="false"
+		[showCloseButton]="true"
+		[(visible)]="deletePopupVisible">
+		<div>
+			<p>
+				Confirm whether you want to Delete
+			</p>
+			<br/>
+			<form (submit)="handleDeleteForm($event)">
+				<dx-form [showColonAfterLabel]="true" labelLocation="top">
+					<dxi-item itemType="button"
+						[buttonOptions]="{ text: 'Confirm', useSubmitBehavior: true, stylingMode:'outlined', type: 'danger' }">
+					</dxi-item>
+				</dx-form>
+			</form>
+		</div>
+	</dx-popup>
+</div>

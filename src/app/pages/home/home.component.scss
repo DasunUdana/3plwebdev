@@ -1,0 +1,40 @@
+.dashboard-title {
+	font-size: 28px !important;
+	font-weight: 200 !important;
+	text-align: center;
+}
+
+.day-stat-box {
+	border: 1px solid #eeeeee;
+	margin: 20px;
+	padding: 20px;
+	height: 180px;
+	box-shadow: 2px 2px 5px #f1f1f1;
+	border-radius: 10px;
+	.day-stat-count {
+		color: #4b3f2d;
+		text-align: center;
+		font-weight: 600;
+		font-size: 28px;
+	}
+	.day-stat-name {
+		color: #757575;
+		text-align: center;
+		font-size: 16px;
+		font-weight: 400;
+	}
+}
+
+.ware-house-space-container {
+	width: 100%;
+}
+
+.ware-house-space-container > .pie {
+	width: 50%;
+	float: left;
+	margin-bottom: 50px;
+}
+
+#weekly-delivery-stat {
+	height: 1000px;
+}

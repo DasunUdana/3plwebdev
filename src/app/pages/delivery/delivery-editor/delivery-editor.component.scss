@@ -1,0 +1,27 @@
+.buttons-wrapper {
+	.dx-button {
+		margin-right: 10px;
+	}
+	.waybill-action {
+		float: right;
+	}
+}
+
+.shortcut-hint {
+	font-weight: 400;
+	font-size: 14px;
+	color: #3f3f3f;
+	margin-top: 0;
+	margin-bottom: 10px;
+
+	span {
+		font-weight: 600;
+		color: #3f3f3f;
+	}
+}
+
+.popup-message {
+	font-size: 14px;
+	font-weight: 400;
+	color: #7a7a7a;
+}

@@ -1,0 +1,41 @@
+<div class="responsive-paddings">
+
+	<div class="page-header">
+		<h2>Suppliers</h2>
+		<h5>List of suppliers</h5>
+		<dx-button [visible]="canAdd()" (onClick)="openSupplier(0)" class="btn-new-supplier" icon="icon ion-md-add" text="New Supplier" type="normal">
+		</dx-button>
+	</div>
+
+	<dx-data-grid [columnAutoWidth]="true"
+				  [columnHidingEnabled]="true"
+				  [dataSource]="suppliers"
+				  [rowAlternationEnabled]="true"
+				  [remoteOperations]="true" [showBorders]="true" class="dx-card wide-card"
+				  keyExpr="Id">
+
+		<dxo-paging [pageSize]="10"></dxo-paging>
+		<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+		<dxo-filter-row [visible]="true"></dxo-filter-row>
+		<dxi-column caption="Supplier Code" dataField="code">
+		</dxi-column>
+		<dxi-column caption="BR" dataField="businessRegistrationId">
+		</dxi-column>
+		<dxi-column dataField="supplierName">
+		</dxi-column>
+		<dxi-column dataField="active" trueText="Active" falseText="Inactive">
+		</dxi-column>
+		<dxi-column dataField="vatNumber">
+		</dxi-column>
+		<dxi-column [width]="110" type="buttons">
+			<dxi-button [visible]="canUpdate()" hint="Edit Supplier"
+						cssClass="default-button"
+						icon="icon ion-md-create"
+						[onClick]="editSupplier"></dxi-button>
+			<dxi-button visible="true" hint="View Supplier"
+						cssClass="info-button"
+						icon="icon ion-md-information-circle"
+						[onClick]="viewSupplier"></dxi-button>
+		</dxi-column>
+	</dx-data-grid>
+</div>

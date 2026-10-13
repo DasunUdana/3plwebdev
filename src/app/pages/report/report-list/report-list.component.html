@@ -1,0 +1,211 @@
+<div class="dx-card responsive-paddings">
+
+	<div class="page-header">
+		<h2>Reports</h2>
+		<h5>All Reports</h5>
+	</div>
+
+	<div *ngIf="!isSupplier" class="report-item dx-card">
+		<h4 class="report-title">Inventory Balance Report</h4>
+		<form method="get" action="/report/view/stockbalancereport">
+			<dx-form [colCount]="2">
+				<dxi-item [editorOptions]="{ dataSource: supplierStore, displayExpr: 'supplierName', valueExpr: 'id', searchEnabled: true, searchExpr: ['code', 'supplierName'],
+					  fieldTemplate: 'supplierField', itemTemplate: 'supplierField'  }"
+						  [label]="{ text: 'Supplier' }" dataField="supplierId" editorType="dxLookup">
+				</dxi-item>
+				<div *dxTemplate="let item of 'supplierField'">
+					<div>{{item?.code}} - {{item?.supplierName}}</div>
+				</div>
+				<dxi-item [editorOptions]="{ dataSource: warehouseStore, displayExpr: 'name', valueExpr: 'id', searchEnabled: true, searchExpr: ['code', 'name'],
+					fieldTemplate: 'warehouseField', itemTemplate: 'warehouseField'}"
+						  [label]="{ text: 'Warehouse' }" dataField="warehouseId" editorType="dxLookup">
+				</dxi-item>
+				<div *dxTemplate="let item of 'warehouseField'">
+					<div>{{item?.code}} - {{item?.name}}</div>
+				</div>
+				<dxi-item [colSpan]="2" itemType="empty"></dxi-item>
+				<dxi-item [colSpan]="2" itemType="empty"></dxi-item>
+				<dxi-item horizontalAlignment="left" [colSpan]="2" [buttonOptions]="{ text: 'Generate Report',useSubmitBehavior: true, type: 'default'}"
+						  class="generate-button"
+						  itemType="button">
+				</dxi-item>
+			</dx-form>
+		</form>
+	</div>
+
+	<div *ngIf="!isSupplier" class="report-item dx-card">
+		<h4 class="report-title">Stock Movement Report</h4>
+		<form method="get" action="/report/view/stockmovementreport">
+			<dx-form [colCount]="2">
+				<dxi-item [isRequired]="true" [editorOptions]="{ dataSource: productStore, displayExpr: 'name', valueExpr: 'id', searchEnabled: true,
+					searchExpr: ['code', 'name'],
+					fieldTemplate: 'productField', itemTemplate: 'productField'}"
+						  [label]="{ text: 'Product' }" dataField="productId" editorType="dxLookup">
+				</dxi-item>
+				<div *dxTemplate="let item of 'productField'">
+					<div>{{item?.code}} - {{item?.name}}</div>
+				</div>
+				<dxi-item [editorOptions]="{ dataSource: warehouseStore, displayExpr: 'name', valueExpr: 'id', searchEnabled: true, searchExpr: ['code', 'name'],
+					fieldTemplate: 'warehouseField', itemTemplate: 'warehouseField'}"
+						  [label]="{ text: 'Warehouse' }" dataField="warehouseId" editorType="dxLookup">
+				</dxi-item>
+				<dxi-item [isRequired]="true" dataField="from" editorType="dxDateBox"
+						  [editorOptions]="{ dataType:'date', format: 'shortDateShortTime' }">
+				</dxi-item>
+				<dxi-item [isRequired]="true" dataField="to" editorType="dxDateBox"
+						  [editorOptions]="{ dataType:'date', format: 'shortDateShortTime' }">
+				</dxi-item>
+				<div *dxTemplate="let item of 'warehouseField'">
+					<div>{{item?.code}} - {{item?.name}}</div>
+				</div>
+				<dxi-item [colSpan]="2" itemType="empty"></dxi-item>
+				<dxi-item [colSpan]="2" itemType="empty"></dxi-item>
+				<dxi-item horizontalAlignment="left" [colSpan]="2" [buttonOptions]="{ text: 'Generate Report',useSubmitBehavior: true, type: 'default'}"
+						  class="generate-button"
+						  itemType="button">
+				</dxi-item>
+			</dx-form>
+		</form>
+	</div>
+
+	<div *ngIf="!isSupplier" class="report-item dx-card">
+		<h4 class="report-title">Monthly Reconciliation Report</h4>
+		<form method="get" action="/report/view/monthlyreconciliationreport">
+			<dx-form [colCount]="2">
+				<dxi-item [isRequired]="true" [colSpan]="1"
+						  [editorOptions]="{ dataSource: warehouseStore, displayExpr: 'name', valueExpr: 'id',
+						  searchEnabled: true, searchExpr: ['code', 'name'],
+					fieldTemplate: 'warehouseField', itemTemplate: 'warehouseField'}"
+						  [label]="{ text: 'Warehouse' }" dataField="warehouseId" editorType="dxLookup">
+				</dxi-item>
+				<dxi-item [colSpan]="1" itemType="empty"></dxi-item>
+				<dxi-item [isRequired]="true" [colSpan]="1" dataField="from" editorType="dxDateBox"
+						  [editorOptions]="{ dataType:'date', format: 'shortDateShortTime' }">
+				</dxi-item>
+				<dxi-item [isRequired]="true" [colSpan]="1" dataField="to" editorType="dxDateBox"
+						  [editorOptions]="{ dataType:'date', format: 'shortDateShortTime' }">
+				</dxi-item>
+				<div *dxTemplate="let item of 'warehouseField'">
+					<div>{{item?.code}} - {{item?.name}}</div>
+				</div>
+				<dxi-item [colSpan]="2" itemType="empty"></dxi-item>
+				<dxi-item [colSpan]="2" itemType="empty"></dxi-item>
+				<dxi-item horizontalAlignment="left" [colSpan]="2" [buttonOptions]="{ text: 'Generate Report',useSubmitBehavior: true, type: 'default'}"
+						  class="generate-button"
+						  itemType="button">
+				</dxi-item>
+			</dx-form>
+		</form>
+	</div>
+
+	<div *ngIf="!isSupplier" class="report-item dx-card">
+		<h4 class="report-title">Monthly Sales Report</h4>
+		<form method="get" action="/report/view/monthlysalesreport">
+			<dx-form [colCount]="2">
+				<dxi-item [isRequired]="true" [colSpan]="1"
+						  [editorOptions]="{ dataSource: warehouseStore, displayExpr: 'name', valueExpr: 'id',
+						  searchEnabled: true, searchExpr: ['code', 'name'],
+					fieldTemplate: 'warehouseField', itemTemplate: 'warehouseField'}"
+						  [label]="{ text: 'Warehouse' }" dataField="warehouseId" editorType="dxLookup">
+				</dxi-item>
+				<dxi-item [colSpan]="1" itemType="empty"></dxi-item>
+				<dxi-item [isRequired]="true" [colSpan]="1" dataField="from" editorType="dxDateBox"
+						  [editorOptions]="{ dataType:'date', format: 'shortDateShortTime' }">
+				</dxi-item>
+				<dxi-item [isRequired]="true" [colSpan]="1" dataField="to" editorType="dxDateBox"
+						  [editorOptions]="{ dataType:'date', format: 'shortDateShortTime' }">
+				</dxi-item>
+				<div *dxTemplate="let item of 'warehouseField'">
+					<div>{{item?.code}} - {{item?.name}}</div>
+				</div>
+				<dxi-item [colSpan]="2" itemType="empty"></dxi-item>
+				<dxi-item [colSpan]="2" itemType="empty"></dxi-item>
+				<dxi-item horizontalAlignment="left" [colSpan]="2" [buttonOptions]="{ text: 'Generate Report',useSubmitBehavior: true, type: 'default'}"
+						  class="generate-button"
+						  itemType="button">
+				</dxi-item>
+			</dx-form>
+		</form>
+	</div>
+
+	<div *ngIf="!isSupplier" class="report-item dx-card">
+		<h4 class="report-title">Sellerwise Item Summery</h4>
+		<form method="get" action="/report/view/sellerwiseitemsummery">
+			<dx-form [colCount]="2">
+				<dxi-item [isRequired]="true" [editorOptions]="{ dataSource: supplierStore, displayExpr: 'supplierName', valueExpr: 'id', searchEnabled: true, searchExpr: ['code', 'supplierName'],
+					  fieldTemplate: 'supplierField', itemTemplate: 'supplierField'  }"
+						  [label]="{ text: 'Supplier' }" dataField="supplierId" editorType="dxLookup">
+				</dxi-item>
+				<div *dxTemplate="let item of 'supplierField'">
+					<div>{{item?.code}} - {{item?.supplierName}}</div>
+				</div>
+				<dxi-item [isRequired]="true" [editorOptions]="{ dataSource: warehouseStore, displayExpr: 'name', valueExpr: 'id', searchEnabled: true, searchExpr: ['code', 'name'],
+					fieldTemplate: 'warehouseField', itemTemplate: 'warehouseField'}"
+						  [label]="{ text: 'Warehouse' }" dataField="warehouseId" editorType="dxLookup">
+				</dxi-item>
+				<div *dxTemplate="let item of 'warehouseField'">
+					<div>{{item?.code}} - {{item?.name}}</div>
+				</div>
+				<dxi-item [colSpan]="2" itemType="empty"></dxi-item>
+				<dxi-item [colSpan]="2" itemType="empty"></dxi-item>
+				<dxi-item horizontalAlignment="left" [colSpan]="2" [buttonOptions]="{ text: 'Generate Report',useSubmitBehavior: true, type: 'default'}"
+						  class="generate-button"
+						  itemType="button">
+				</dxi-item>
+			</dx-form>
+		</form>
+	</div>
+
+	<div *ngIf="!isSupplier" class="report-item dx-card">
+		<h4 class="report-title">Stock Reorder Report</h4>
+		<form method="get" action="/report/view/stockreorderreport">
+			<dx-form [colCount]="2">
+				<dxi-item [editorOptions]="{ dataSource: supplierStore, displayExpr: 'supplierName', valueExpr: 'id',
+					searchEnabled: true, searchExpr: ['code', 'supplierName'],
+					  fieldTemplate: 'supplierField', itemTemplate: 'supplierField'  }"
+						  [label]="{ text: 'Supplier' }" dataField="supplierId" editorType="dxLookup">
+				</dxi-item>
+				<div *dxTemplate="let item of 'supplierField'">
+					<div>{{item?.code}} - {{item?.supplierName}}</div>
+				</div>
+				<dxi-item [colSpan]="2" itemType="empty"></dxi-item>
+				<dxi-item [colSpan]="2" itemType="empty"></dxi-item>
+				<dxi-item horizontalAlignment="left" [colSpan]="2" [buttonOptions]="{ text: 'Generate Report',useSubmitBehavior: true, type: 'default'}"
+						  class="generate-button"
+						  itemType="button">
+				</dxi-item>
+			</dx-form>
+		</form>
+	</div>
+
+	<div *ngIf="isSupplier" class="report-item dx-card">
+		<h4 class="report-title">Inventory Balance Report</h4>
+		<form method="get" action="/report/view/stockbalancereport">
+			<dx-form>
+				<dxi-item>
+					<input name="supplierId" type="hidden" [value]="supplierId"/>
+				</dxi-item>
+				<dxi-item horizontalAlignment="left" [buttonOptions]="{ text: 'Generate Report',useSubmitBehavior: true, type: 'default'}"
+						  class="generate-button-right"
+						  itemType="button">
+				</dxi-item>
+			</dx-form>
+		</form>
+	</div>
+
+	<div *ngIf="isSupplier" class="report-item dx-card">
+		<h4 class="report-title">Stock Reorder Report</h4>
+		<form method="get" action="/report/view/stockreorderreport">
+			<dx-form>
+				<dxi-item>
+					<input name="supplierId" type="hidden" [value]="supplierId"/>
+				</dxi-item>
+				<dxi-item horizontalAlignment="left" [buttonOptions]="{ text: 'Generate Report',useSubmitBehavior: true, type: 'default'}"
+						  class="generate-button-right"
+						  itemType="button">
+				</dxi-item>
+			</dx-form>
+		</form>
+	</div>
+
+</div>

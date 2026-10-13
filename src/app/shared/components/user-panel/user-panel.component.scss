@@ -1,0 +1,69 @@
+@import "../../../../themes/generated/variables.base.scss";
+
+.user-info {
+	display: flex;
+	align-items: center;
+
+	:host-context(.dx-toolbar-menu-section) & {
+		padding: 10px 6px;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	}
+
+	.image-container {
+		overflow: hidden;
+		height: 30px;
+		width: 30px;
+		margin: 0 4px;
+
+		.user-image {
+			width: 100%;
+			height: 100%;
+			background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAEYElEQVRoge1YW0xcVRRd+84McCFKm4E0tjxtplNtUNuhNEArHSBxJgIzLWlSX/URYkw00Q9//KgSEx/9afwxAV8f/ZBKk6a1QYwwIh1oRaVtjAoS7EeDmqYDjYV50rnbD5y2yAz3cs6NjSkrmfm4Z6+z1zrn3HP2PcAqVnFng8zsrLq6WlVV1U9Ercy8BUAxgLxUu6Io7v7+/m/MzGk1qyO3291KRIcBlDBz2phkMvkGAFMNmDIDDQ0NbzLzQYPhE8x8QlGUw4FA4LJsbmkDbrf7NSJ6W4A6y8zPDAwMHJfJL2Wgvr6+CsAwxJdikoi8gUCgT1SDIkr8B+9C7j2yMPNHLpfLJtqBsIHGxsatANxGYkvtCg7U2PDxsyoO1CzRWpKfn+8X1SE8epqm+ZZrL7UrqHNasHuzFaX2m+NUVpCFbBvhw8HEreFeAMdEdAgbYOY6osWvUEp0ndOKsoLMk7u/yob4POPImXkAABFViOqQWb8bgcwjrYena2/OBDMXiooQNkBEBQDwyXOqaBfYX2VLLSVhAzK7kLjypcgVJcpuo7cdQga4y/Fo5YZYzCwRO4pjUT66ySvCFZwB6njHO52zZ9viPb2jexyd3eMZWena97pseMszrYLRKaJEeAkpxHipIWvRM7rxlx7p2l+szwIhffVqBEK1EB/d5AXjA+Q7NoAUuYKQWcNfE7+D6Xl6/NcvV0qXSs69zeMAnDJ9gDBGnlP3i9Jld6GgJB9gnJahyxkg5TMpPgAwuqUkSOfvbf4aBqvSNBgk76ndMvnlD7Kk1gYgJMCcAVGbbHppA9TUcxEatQK4ugLaDEjzk+fzSen8sh2kwF81ORCemUCOffnAWAhQCx1miAdMvhfiDjByCoC89UC2HbDkLDQkY0B8Ggj/AcRCoBfMy2vavdANxEILv/8Id2Y1eiv8wbCr+PW+7/PauhKjc+VxvfjRufJ4XltXovhg33ctg+GtsvmFDfiCkR2+YHSIofzAGldGZudsL//2pEWP9+rFxyyR2TkbgO2kKOd8wejplqFwpaiOFRvwfsHZLcFoJ0BnAdQCQFmFEyDgzEyJ9dAlT0buoUseDE6XW0FAWcXm1ONdxMqILxh5f9/PnJWRnAEr2g1avp1bR/OW4wBq/t32y/AoJs+PAQD8hefxSlE/HsibAgD8GC7Ce1ONOHFlYcU4tm3BfTVLVw8DQ9l8fe+xh++6YrqBPSPX7FrCNoxM1ScD4yMXMDn6E7QM5b2iAA5XBZxVDy6Xeew64rU9u9YYOhiNGWAm31CsF8AjeqHXpq8icmEAoak/cTmy8N2/LjeKgqL1yH3Ijbvta4yo6jm5U20yIs2QAX8w+hQDR4zEmgbCEyd3qp/qhem+xPu62aIB7eaoMg5itLcz6+rTDUjcE3cTcK85soyDAce54VidXpyBbVRrNkOQCBTmZS+QASMGmLabokYADNI94PQNEMpNUSOGjXoBRk7itSYIEcXtzL2KVfwv8Df27kn7oXMrKwAAAABJRU5ErkJggg==") no-repeat #fff;
+			background-size: cover;
+		}
+	}
+
+	.user-name {
+		font-size: 14px;
+		color: $base-text-color;
+		margin: 0 9px;
+	}
+}
+
+.user-panel {
+	float: right;
+}
+
+.user-panel ::ng-deep {
+	.dx-list-item .dx-icon {
+		vertical-align: middle;
+		color: $base-text-color;
+		margin-right: 16px;
+	}
+
+	.dx-rtl .dx-list-item .dx-icon {
+		margin-right: 0;
+		margin-left: 16px;
+	}
+}
+
+::ng-deep .dx-context-menu.user-menu {
+	&.dx-rtl {
+		.dx-submenu .dx-menu-items-container .dx-icon {
+			margin-left: 16px;
+		}
+	}
+
+	.dx-submenu .dx-menu-items-container .dx-icon {
+		margin-right: 16px;
+	}
+
+	.dx-menu-item .dx-menu-item-content {
+		padding: 3px 15px 4px;
+	}
+}
+
+::ng-deep .dx-theme-generic .user-menu .dx-menu-item-content .dx-menu-item-text {
+	padding-left: 4px;
+	padding-right: 4px;
+}

@@ -1,0 +1,79 @@
+<div class="responsive-paddings">
+
+	<div class="page-header">
+		<h2>Product Details</h2>
+		<h5>Details of products</h5>
+		<dx-button (onClick)="backToList()" type="back">
+		</dx-button>
+	</div>
+
+	<dx-form [readOnly]="true" [colCount]="4" [formData]="product" id="form" labelLocation="top">
+		<dxi-item [colSpan]="1" [isRequired]="true" dataField="code"></dxi-item>
+		<dxi-item [colSpan]="1" [editorOptions]="{ dataSource: supplierStore, displayExpr: 'supplierName', valueExpr: 'id', searchEnabled: true, searchExpr: ['code', 'supplierName'],
+					  fieldTemplate: 'supplierField', itemTemplate: 'supplierField'  }"
+				  [isRequired]="true"
+				  [label]="{ text: 'Supplier' }" dataField="supplierId" editorType="dxLookup">
+		</dxi-item>
+		<dxi-item [colSpan]="1" [editorOptions]="{ dataSource: metadata.storeTypes, displayExpr: 'name', valueExpr: 'id' }"
+				  [isRequired]="true"
+				  [label]="{ text: 'Storing Type' }" dataField="storingType" editorType="dxSelectBox">
+		</dxi-item>
+		<dxi-item [colSpan]="1" dataField="active" editorType="dxCheckBox"></dxi-item>
+		<dxi-item [colSpan]="4" [isRequired]="true" dataField="name"></dxi-item>
+		<dxi-item [colSpan]="4" [editorOptions]="{ height: 120 }" dataField="description"
+				  itemType="dxTextArea"></dxi-item>
+		<dxi-item [colSpan]="2" [colCount]="2" caption="Inventory" itemType="group">
+			<dxi-item [isRequired]="true" dataField="sku"></dxi-item>
+			<dxi-item [editorOptions]="{ dataSource: metadata.unitOfMeasures, displayExpr: 'code', valueExpr: 'id' }"
+					  [isRequired]="true"
+					  [label]="{ text: 'Unit of Measure' }" dataField="unitOfMeasureId" editorType="dxSelectBox">
+			</dxi-item>
+			<dxi-item dataField="unitPrice" dataType="number"></dxi-item>
+			<dxi-item dataField="reorderLevel" dataType="number"></dxi-item>
+		</dxi-item>
+
+		<dxi-item [colSpan]="2" [colCount]="3" caption="Storage" itemType="group">
+			<dxi-item [isRequired]="true" dataField="width" helpText="Product width (m)"></dxi-item>
+			<dxi-item [isRequired]="true" dataField="height" helpText="Product height (m)"></dxi-item>
+			<dxi-item [isRequired]="true" dataField="length" helpText="Product length (m)"></dxi-item>
+			<dxi-item [editorOptions]="{ items: metadata.massUnits, displayExpr: 'name', valueExpr: 'id' }" dataField="massUnit"
+					  editorType="dxSelectBox"></dxi-item>
+			<dxi-item dataField="weight" dataType="number"></dxi-item>
+		</dxi-item>
+
+		<div *dxTemplate="let item of 'supplierField'">
+			<div>{{item?.code}} - {{item?.supplierName}}</div>
+		</div>
+
+	</dx-form>
+
+	<app-product-stocks
+		id="productStockAdjustmentsComponent"
+		[productId]="productId"
+		[displayActions]="true"
+		[warehouseDataSource]="warehouseDataSource"
+		(onTransferDispatchReturnStock)="onTransferStock('Dispatch Return', $event)"
+		(onTransferSaleReturnStock)="onTransferStock('Sales Return', $event)">
+	</app-product-stocks>
+
+	<br/><br/>
+
+	<app-product-stock-adjustments
+		id="productStocksSection"
+		[productId]="productId"
+		[stockAdjustmentTypes]="metadata.stockAdjustmentTypes"
+		[warehouseDataSource]="warehouseDataSource">
+	</app-product-stock-adjustments>
+
+	<app-transfer-stock-popup
+		(onSuccess)="onTransferStockSuccess()"
+		(onCancel)="onTransferStockModalCancel()"
+		[productId]="productId"
+		[transferType]="transferStockType"
+		[wareHouseId]="currentProductStock.wareHouseId"
+		[unitCost]="product.unitPrice"
+		[visible]="showTransferStockModal"
+		[quantity]="0">
+	</app-transfer-stock-popup>
+
+</div>

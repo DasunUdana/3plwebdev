@@ -1,0 +1,38 @@
+<h4 class="sub-header">Product Stock Adjustments</h4>
+
+<dx-data-grid id="stockAdjustmentsGrid" [columnAutoWidth]="true" [columnHidingEnabled]="true"
+			  [dataSource]="stockAdjustmentsDataSource"
+			  [rowAlternationEnabled]="true"
+			  [remoteOperations]="true" [showBorders]="true" class="dx-card wide-card"
+			  keyExpr="id">
+	<dxo-paging [pageSize]="10"></dxo-paging>
+	<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+	<dxo-filter-row [visible]="true"></dxo-filter-row>
+	<dxi-column dataField="created" dataType="date" sortOrder="desc"></dxi-column>
+	<dxi-column caption="Warehouse" dataField="wareHouseId">
+		<dxo-lookup
+			[dataSource]="warehouseDataSource"
+			displayExpr="name"
+			valueExpr="id">
+		</dxo-lookup>
+	</dxi-column>
+	<dxi-column dataField="type">
+		<dxo-lookup
+			[dataSource]="stockAdjustmentTypes"
+			displayExpr="name"
+			valueExpr="id">
+		</dxo-lookup>
+	</dxi-column>
+	<dxi-column dataField="quantity" dataType="number">
+	</dxi-column>
+	<dxi-column [width]="200" dataField="unitCost" dataType="number">
+	</dxi-column>
+	<dxi-column [width]="200" [width]="200" dataField="expiredDate" dataType="date" format="dd/MM/yyyy">
+	</dxi-column>
+	<dxi-column [width]="400" dataField="note">
+	</dxi-column>
+
+</dx-data-grid>
+
+
+

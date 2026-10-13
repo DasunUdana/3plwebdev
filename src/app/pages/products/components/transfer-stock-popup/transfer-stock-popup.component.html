@@ -1,0 +1,54 @@
+<dx-popup
+	[width]="500"
+	[height]="'auto'"
+	[showTitle]="true"
+	[title]="title"
+	[dragEnabled]="false"
+	[closeOnOutsideClick]="false"
+	(onShowing)="onShowingPopup($event)"
+	(onHidden)="onClosePopup($event)"
+	[showCloseButton]="true"
+	[(visible)]="visible">
+	<div *dxTemplate="let data of 'content'">
+		<p>Enter details for transfer the {{transferType}}</p>
+		<br/>
+		<form (submit)="handleSubmit($event)">
+			<dx-form [(formData)]="stockTransfer" id="form" labelLocation="top">
+				<dxi-item [label]="{text: 'Warehouse'}" [editorOptions]="{ dataSource: warehouseStore, displayExpr: 'name', valueExpr: 'id',
+					searchEnabled: true, searchExpr: ['code', 'name'], fieldTemplate: 'warehouseField',
+					itemTemplate: 'warehouseField', readOnly: true }"
+						  [isRequired]="true"
+						  dataField="wareHouseId" editorType="dxLookup">
+				</dxi-item>
+				<div *dxTemplate="let item of 'warehouseField'">
+					<div>{{item?.code}} - {{item?.name}}</div>
+				</div>
+				<dxi-item [label]="{text: 'Product Name'}" dataField="productId"
+						  [editorOptions]="{ dataSource: productStore, displayExpr: 'name', valueExpr: 'id',
+						  searchEnabled: true, searchExpr: ['name'], readOnly: true }"
+						  editorType="dxLookup" [isRequired]="true">
+				</dxi-item>
+				<dxi-item [label]="{text: 'Good Condition Quantity'}" dataField="quantity" dataType="number" [isRequired]="true">
+				</dxi-item>
+				<dxi-item dataField="damageQuantity" dataType="number" [isRequired]="true">
+				</dxi-item>
+				<dxi-item dataField="unitCost" dataType="number" [isRequired]="true">
+				</dxi-item>
+				<dxi-item dataField="trackingNumber" [isRequired]="true">
+				</dxi-item>
+				<dxi-item [isRequired]="true" [editorOptions]="{ height: 120 }" dataField="note"
+						  editorType="dxTextArea"></dxi-item>
+				<dxi-item itemType="empty" [colSpan]="1"></dxi-item>
+				<dxi-item
+					[buttonOptions]="{ text:'Transfer Stock', useSubmitBehavior: true, icon: 'save', type:'success'}"
+					cssClass="btn-transfer-stock"
+					itemType="button">
+				</dxi-item>
+			</dx-form>
+		</form>
+
+	</div>
+</dx-popup>
+
+
+

@@ -1,0 +1,48 @@
+<div class="responsive-paddings">
+
+	<div class="page-header">
+		<h2>Warehouses</h2>
+		<h5>List of warehouses</h5>
+		<dx-button (onClick)="openWarehouse(0)" class="btn-new-warehouse" icon="icon ion-md-add" text="New Warehouse" type="normal">
+		</dx-button>
+	</div>
+
+	<dx-data-grid [columnAutoWidth]="true" [columnHidingEnabled]="true"
+				  [rowAlternationEnabled]="true"
+				  [dataSource]="warehouses"
+				  [remoteOperations]="true" [showBorders]="true" class="dx-card wide-card"
+				  keyExpr="id">
+
+		<dxo-paging [pageSize]="10"></dxo-paging>
+		<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+		<dxo-filter-row [visible]="true"></dxo-filter-row>
+
+		<dxi-column dataField="code">
+		</dxi-column>
+
+		<dxi-column dataField="name">
+		</dxi-column>
+
+		<dxi-column caption="Storage Capcity (m³)" dataField="storageCapacity">
+		</dxi-column>
+
+		<dxi-column dataField="active">
+		</dxi-column>
+
+		<dxi-column caption="City" dataField="address.city.cityName">
+		</dxi-column>
+
+		<dxi-column caption="phone" dataField="phone">
+		</dxi-column>
+
+		<dxi-column [width]="110" type="buttons">
+			<dxi-button visible="true" hint="Edit Warehouse"
+						cssClass="default-button"
+						icon="icon ion-md-create"
+						[onClick]="editWarehouse"></dxi-button>
+		</dxi-column>
+
+
+	</dx-data-grid>
+</div>
+

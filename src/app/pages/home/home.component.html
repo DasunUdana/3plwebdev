@@ -1,0 +1,153 @@
+<div class="responsive-paddings">
+
+	<h3 class="dashboard-title">Daily Delivery Statistics</h3>
+
+	<div>
+		<dx-responsive-box singleColumnScreen="sm" [(screenByWidth)]="screen">
+			<dxi-row [ratio]="1">
+			</dxi-row>
+			<dxi-col [ratio]="1">
+			</dxi-col>
+			<dxi-col [ratio]="1">
+			</dxi-col>
+			<dxi-col [ratio]="1">
+			</dxi-col>
+			<dxi-col [ratio]="1">
+			</dxi-col>
+			<dxi-col [ratio]="1">
+			</dxi-col>
+			<dxi-col [ratio]="1">
+			</dxi-col>
+			<dxi-col [ratio]="1">
+			</dxi-col>
+			<dxi-item>
+				<dxi-location [row]="0" [col]="0"></dxi-location>
+				<div *dxTemplate class="header item">
+					<div class="day-stat-box">
+						<p class="day-stat-count">{{this.pendingCount}}</p>
+						<p class="day-stat-name">Pending</p>
+					</div>
+				</div>
+			</dxi-item>
+			<dxi-item>
+				<dxi-location [row]="0" [col]="1"></dxi-location>
+				<div *dxTemplate class="header item">
+					<div class="day-stat-box">
+						<p class="day-stat-count">{{this.processingCount}}</p>
+						<p class="day-stat-name">Processing</p>
+					</div>
+				</div>
+			</dxi-item>
+			<dxi-item>
+				<dxi-location [row]="0" [col]="2"></dxi-location>
+				<div *dxTemplate class="header item">
+					<div class="day-stat-box">
+						<p class="day-stat-count">{{this.dispatchedCount}}</p>
+						<p class="day-stat-name">Dispatched</p>
+					</div>
+				</div>
+			</dxi-item>
+			<dxi-item>
+				<dxi-location [row]="0" [col]="3"></dxi-location>
+				<div *dxTemplate class="header item">
+					<div class="day-stat-box">
+						<p class="day-stat-count">{{this.partiallyCompletedCount}}</p>
+						<p class="day-stat-name">Partially Completed</p>
+					</div>
+				</div>
+			</dxi-item>
+			<dxi-item>
+				<dxi-location [row]="0" [col]="4"></dxi-location>
+				<div *dxTemplate class="header item">
+					<div class="day-stat-box">
+						<p class="day-stat-count">{{this.completedCount}}</p>
+						<p class="day-stat-name">Completed</p>
+					</div>
+				</div>
+			</dxi-item>
+			<dxi-item>
+				<dxi-location [row]="0" [col]="5"></dxi-location>
+				<div *dxTemplate class="header item">
+					<div class="day-stat-box">
+						<p class="day-stat-count">{{this.partiallyReturnCount}}</p>
+						<p class="day-stat-name">Partially Return</p>
+					</div>
+				</div>
+			</dxi-item>
+			<dxi-item>
+				<dxi-location [row]="0" [col]="6"></dxi-location>
+				<div *dxTemplate class="header item">
+					<div class="day-stat-box">
+						<p class="day-stat-count">{{this.returnCount}}</p>
+						<p class="day-stat-name">Return</p>
+					</div>
+				</div>
+			</dxi-item>
+		</dx-responsive-box>
+	</div>
+
+	<br/><br/>
+
+	<div *ngIf="weeklyDeliveryStat">
+		<dx-chart
+			palette="soft"
+			id="weekly-delivery-stat"
+			title="Weekly Delivery Statistics"
+			[rotated]="true"
+			[dataSource]="weeklyDeliveryStat">
+			<dxi-series valueField="Pending" name="Pending"></dxi-series>
+			<dxi-series valueField="Processing" name="Processing"></dxi-series>
+			<dxi-series valueField="Dispatched" name="Dispatched"></dxi-series>
+			<dxi-series valueField="Partially Completed" name="Partially Completed"></dxi-series>
+			<dxi-series valueField="Completed" name="Completed"></dxi-series>
+			<dxi-series valueField="Partially Return" name="Partially Return"></dxi-series>
+			<dxi-series valueField="Return" name="Return"></dxi-series>
+			<dxi-value-axis [valueType]="'numeric'" [visible]="false" [allowDecimals]="false" position="right">
+				<dxo-title text="Delivery Counts"></dxo-title>
+			</dxi-value-axis>
+			<dxo-common-series-settings
+				[barWidth]="10"
+				[barPadding]="1"
+				argumentField="date"
+				type="bar">
+			</dxo-common-series-settings>
+			<dxo-legend
+				verticalAlignment="bottom"
+				horizontalAlignment="center">
+			</dxo-legend>
+			<dxo-export [enabled]="true"></dxo-export>
+			<dxo-tooltip
+				[enabled]="true"
+				[customizeTooltip]="customizeTooltipMonthlyStat"
+				location="edge">
+			</dxo-tooltip>
+		</dx-chart>
+	</div>
+
+	<br/><br/><br/>
+
+	<div *ngIf="!isSupplier" class="ware-house-space-container">
+
+		<h3 class="dashboard-title">Warehouses Utilization Analysis</h3>
+
+		<dx-pie-chart *ngFor="let warehouse of warehouseStorageInfo" class="pie"
+					  [title]="warehouse.title"
+					  [dataSource]="warehouse.spaces"
+					  palette="soft"
+					  sizeGroup="piesGroup">
+			<dxi-series
+				pla
+				argumentField="name"
+				valueField="value">
+				<dxo-label [visible]="true" [customizeText]="customizePieChartLabel">
+				</dxo-label>
+			</dxi-series>
+			<dxo-legend verticalAlignment="bottom"
+						horizontalAlignment="center"
+						itemTextPosition="right"
+						[rowCount]="2">
+			</dxo-legend>
+		</dx-pie-chart>
+	</div>
+
+</div>

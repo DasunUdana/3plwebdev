@@ -1,0 +1,22 @@
+<div class="user-panel">
+	<div class="user-info">
+		<div class="image-container">
+			<div class="user-image"></div>
+		</div>
+		<div class="user-name">{{user.userName}}</div>
+	</div>
+	<dx-context-menu
+		*ngIf="menuMode === 'context'"
+		[items]="menuItems"
+		[position]="{ my: 'top center', at: 'bottom center' }"
+		cssClass="user-menu"
+		showEvent="dxclick"
+		target=".user-button"
+		width="210px">
+	</dx-context-menu>
+	<dx-list
+		*ngIf="menuMode === 'list'"
+		[items]="menuItems"
+		class="dx-toolbar-menu-action">
+	</dx-list>
+</div>

@@ -1,0 +1,59 @@
+@import "../../../../themes/generated/variables.base.scss";
+
+:host {
+	width: 100%;
+	height: 100%;
+}
+
+.single-card {
+	.dx-card {
+		width: 330px;
+		margin: auto auto;
+		padding: 40px;
+		flex-grow: 0;
+
+		:host-context(.screen-x-small) & {
+			width: 100%;
+			height: 100%;
+			border-radius: 0;
+			box-shadow: none;
+			margin: 0;
+			border: 0;
+			flex-grow: 1;
+		}
+	}
+}
+
+
+.login-form {
+	.link {
+		text-align: center;
+		font-size: 16px;
+		font-style: normal;
+
+		a {
+			text-decoration: none;
+		}
+	}
+
+	::ng-deep .form-text {
+		margin: 10px 0;
+		color: rgba($base-text-color, alpha($base-text-color) * 0.7);
+	}
+}
+
+.logo {
+	width: 100%;
+	margin-bottom: 5%;
+}
+
+.error-message {
+	color: #ff3838;
+	text-align: center;
+}
+
+.version-no{
+    text-align: center;
+    color: darkgrey;
+    margin-block-end: 0em !important;
+}

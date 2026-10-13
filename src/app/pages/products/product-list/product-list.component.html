@@ -1,0 +1,62 @@
+<div class="responsive-paddings">
+
+	<div class="page-header">
+		<h2>Products</h2>
+		<h5>List of products</h5>
+		<dx-button [visible]="canAdd()" (onClick)="openProduct(0)" class="btn-new-product" icon="add" text="New Product" type="normal">
+		</dx-button>
+	</div>
+
+	<dx-data-grid [columnAutoWidth]="true"
+				  [columnHidingEnabled]="true"
+				  [dataSource]="productStore"
+				  [rowAlternationEnabled]="true"
+				  [showBorders]="true" class="dx-card wide-card"
+				  keyExpr="id">
+
+		<dxo-paging [pageSize]="10"></dxo-paging>
+		<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+		<dxo-filter-row [visible]="true"></dxo-filter-row>
+		<dxi-column dataField="code">
+		</dxi-column>
+		<dxi-column dataField="storingType">
+			<dxo-lookup
+				[dataSource]="metaData.storeTypes"
+				displayExpr="name"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column dataField="name">
+		</dxi-column>
+		<dxi-column caption="SKU" dataField="sku">
+		</dxi-column>
+		<dxi-column [visible]="canDisplaySupplierColumn()" caption="Supplier" dataField="supplierId">
+			<dxo-lookup
+				[dataSource]="supplierStore"
+				displayExpr="supplierName"
+				fieldTemplate="field"
+				valueExpr="id">
+				<dxo-drop-down-options title="Select Supplier"></dxo-drop-down-options>
+				<div *dxTemplate="let item of 'field'">
+					<div>{{item?.code}} - {{item?.supplierName}}</div>
+				</div>
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column caption="Storage Units (m³)" [width]="150" dataField="storageUnits">
+		</dxi-column>
+		<dxi-column [width]="110" type="buttons">
+			<dxi-button [visible]="canEdit()" hint="Edit Product Details"
+						cssClass="default-button"
+						icon="icon ion-md-create"
+						[onClick]="editProduct"></dxi-button>
+			<dxi-button visible="true" hint="View Product Details"
+						cssClass="info-button"
+						icon="icon ion-md-information-circle"
+						[onClick]="viewProduct"></dxi-button>
+		</dxi-column>
+		<dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
+		<div *dxTemplate="let item of 'detail'">
+			<app-product-stocks [displayActions]="false" [productId]="item.key" [warehouseDataSource]="warehouseStore"></app-product-stocks>
+		</div>
+	</dx-data-grid>
+</div>

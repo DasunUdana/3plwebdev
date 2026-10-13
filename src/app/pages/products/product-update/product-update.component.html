@@ -1,0 +1,62 @@
+<div class="responsive-paddings">
+
+	<div class="page-header">
+		<h2>{{product.id == 0 ? 'Add' : 'Update' }} Product</h2>
+		<h5>Product details</h5>
+		<dx-button (onClick)="backToList()" class="btn-back" type="back">
+		</dx-button>
+	</div>
+
+	<div>
+		<form (submit)="handleSubmit($event)">
+			<dx-form [colCount]="4" [formData]="product" id="form" labelLocation="top">
+				<dxi-item [colSpan]="2" [isRequired]="true" dataField="code"></dxi-item>
+				<dxi-item [colSpan]="2" [editorOptions]="{ dataSource: supplierStore, displayExpr: 'supplierName', valueExpr: 'id', searchEnabled: true, searchExpr: ['code', 'supplierName'],
+					  fieldTemplate: 'supplierField', itemTemplate: 'supplierField'  }"
+						  [isRequired]="true"
+						  [label]="{ text: 'Supplier' }" dataField="supplierId" editorType="dxLookup">
+				</dxi-item>
+				<dxi-item [colSpan]="2" [editorOptions]="{ dataSource: metadata.storeTypes, displayExpr: 'name', valueExpr: 'id' }"
+						  [isRequired]="true"
+						  [label]="{ text: 'Storing Type' }" dataField="storingType" editorType="dxSelectBox">
+				</dxi-item>
+				<dxi-item [colSpan]="2" [isRequired]="true" dataField="name"></dxi-item>
+				<dxi-item [colSpan]="4" [editorOptions]="{ height: 120 }" [isRequired]="true" dataField="description"
+						  editorType="dxTextArea"></dxi-item>
+				<dxi-item [colSpan]="4" dataField="active" editorType="dxCheckBox"></dxi-item>
+
+				<dxi-item [colSpan]="4" itemType="empty"></dxi-item>
+				<dxi-item [colSpan]="4" itemType="empty"></dxi-item>
+
+				<dxi-item [colSpan]="2" caption="Inventory" itemType="group">
+					<dxi-item [isRequired]="true" dataField="sku"></dxi-item>
+					<dxi-item [editorOptions]="{ dataSource: metadata.unitOfMeasures, displayExpr: 'code', valueExpr: 'id' }"
+							  [isRequired]="true"
+							  [label]="{ text: 'Unit of Measure' }" dataField="unitOfMeasureId" editorType="dxSelectBox">
+					</dxi-item>
+					<dxi-item dataField="unitPrice" [isRequired]="true" dataType="number"></dxi-item>
+					<dxi-item dataField="reorderLevel" [isRequired]="true" dataType="number"></dxi-item>
+				</dxi-item>
+
+				<dxi-item [colSpan]="2" [colCount]="3" caption="Storage" itemType="group">
+					<dxi-item [isRequired]="true" dataType="number" dataField="width" helpText="Product width (m)"></dxi-item>
+					<dxi-item [isRequired]="true" dataType="number" dataField="height" helpText="Product height (m)"></dxi-item>
+					<dxi-item [isRequired]="true" dataType="number" dataField="length" helpText="Product length (m)"></dxi-item>
+					<dxi-item [editorOptions]="{ items: metadata.massUnits, displayExpr: 'name', valueExpr: 'id' }" dataField="massUnit"
+							  editorType="dxSelectBox"></dxi-item>
+					<dxi-item dataField="weight"></dxi-item>
+				</dxi-item>
+
+				<dxi-item [buttonOptions]="{ text: 'Save Changes',useSubmitBehavior: true, icon: 'save', type: 'success',class: 'btn-save-product' }" [colSpan]="4" class="btn-save-product"
+						  itemType="button">
+				</dxi-item>
+
+				<div *dxTemplate="let item of 'supplierField'">
+					<div>{{item?.code}} - {{item?.supplierName}}</div>
+				</div>
+
+			</dx-form>
+		</form>
+	</div>
+
+</div>

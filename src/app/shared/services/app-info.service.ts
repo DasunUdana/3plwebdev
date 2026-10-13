@@ -1,0 +1,15 @@
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class AppInfoService {
+	constructor() {
+	}
+
+	public get title() {
+		return 'Transnational 3PL';
+	}
+
+	public get currentYear() {
+		return new Date().getFullYear();
+	}
+}

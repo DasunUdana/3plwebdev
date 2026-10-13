@@ -1,0 +1,118 @@
+<div class="responsive-paddings">
+
+	<div class="page-header">
+		<h2>Deliveries</h2>
+		<h5>Delivery List</h5>
+		<dx-button (click)="openDelivery(0)" icon="add" text="New Delivery"
+				   type="normal">
+		</dx-button>
+		<dx-button [visible]="!isSupplier()"
+				   class="upload-delivery-sheet-btn" type="normal"
+				   (click)="uploadDeliverySheet()"
+				   text="Upload Delivery Sheet"
+				   icon="rowfield">
+		</dx-button>
+	</div>
+
+	<dx-data-grid #grid [columnAutoWidth]="true"
+				  [columnHidingEnabled]="true"
+				  [rowAlternationEnabled]="true"
+				  [dataSource]="deliveryDataSource"
+				  [remoteOperations]="true" [showBorders]="true"
+				  class="dx-card wide-card" keyExpr="id">
+		<dxo-paging [pageSize]="10"></dxo-paging>
+		<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+		<dxo-filter-row [visible]="true"></dxo-filter-row>
+		<dxi-column caption="Delivery No" dataField="deliveryNo"></dxi-column>
+		<dxi-column caption="Delivery Status" dataField="deliveryStatus">
+			<dxo-lookup
+				[dataSource]="metaData.deliveryStatus"
+				displayExpr="name"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column caption="Delivery Type" dataField="type">
+			<dxo-lookup
+				[dataSource]="metaData.deliveryTypes"
+				displayExpr="name"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column caption="Date" dataField="created" dataType="date" sortOrder="desc"></dxi-column>
+		<dxi-column caption="Delivery Date" dataField="deliveryDate" dataType="date"></dxi-column>
+		<dxi-column [visible]="!isSupplier()" caption="Supplier" dataField="supplierId">
+			<dxo-lookup
+				[dataSource]="supplierDataSource"
+				displayExpr="supplierName"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column caption="Warehouse" dataField="wareHouseId">
+			<dxo-lookup
+				[dataSource]="warehouseDataSource"
+				displayExpr="name"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column [width]="110" type="buttons">
+			<dxi-button hint="View Delivery"
+						cssClass="info-button"
+						icon="icon ion-md-information-circle"
+						[onClick]="viewDelivery"></dxi-button>
+		</dxi-column>
+	</dx-data-grid>
+</div>
+
+<dx-popup
+	[width]="500"
+	[height]="'auto'"
+	[showTitle]="true"
+	title="Upload Delivery Sheet"
+	[dragEnabled]="false"
+	[closeOnOutsideClick]="false"
+	[showCloseButton]="true"
+	[(visible)]="showUploadDeliverySheetPopup">
+	<div *dxTemplate="let data of 'content'">
+		<dx-file-uploader
+			#fileUploader
+			[uploadUrl]="deliveryCompleteProcessUploadUrl"
+			(onBeforeSend)="onBeforeSend($event)"
+			(onUploaded)="onUploaded($event)"
+			(onUploadStarted)="onUploadStarted($event)"
+			[multiple]="false"
+			accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+			selectButtonText="Upload Excel File"
+			name="file"
+			uploadMode="instantly"
+		></dx-file-uploader>
+	</div>
+</dx-popup>
+
+<dx-popup
+	[width]="900"
+	[height]="'auto'"
+	[showTitle]="true"
+	title="Processing Delivery Sheet Overview"
+	[dragEnabled]="false"
+	[closeOnOutsideClick]="false"
+	[showCloseButton]="true"
+	[(visible)]="showUploadDeliverySheetResultPopup">
+	<div *dxTemplate="let data of 'content'">
+		<dx-data-grid
+					  [columnAutoWidth]="true"
+					  [columnHidingEnabled]="true"
+					  [rowAlternationEnabled]="true"
+					  [dataSource]="uploadCompleteSheetResultDataSource"
+					  [showBorders]="true">
+			<dxo-export [enabled]="true"></dxo-export>
+			<dxo-paging [pageSize]="10"></dxo-paging>
+			<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+			<dxo-filter-row [visible]="true"></dxo-filter-row>
+			<dxi-column caption="Tracking Number" dataField="trackingNumber" width="100"></dxi-column>
+			<dxi-column trueText="Success" falseText="Error" caption="Result" dataField="success" width="100"></dxi-column>
+			<dxi-column caption="Message" dataField="message"></dxi-column>
+		</dx-data-grid>
+	</div>
+</dx-popup>
+
+

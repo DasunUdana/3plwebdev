@@ -1,0 +1,46 @@
+<dx-scroll-view class="with-footer single-card" height="100%" width="100%">
+	<div class="dx-card content">
+		<img class="logo" src="assets/images/logo.png"/>
+
+		<p class="error-message">{{errorMessage}}</p>
+
+		<form (submit)="login($event)" class="login-form">
+
+			<dx-form [disabled]="isLoading" [formData]="loginModel">
+
+				<dxi-item [editorOptions]="{ stylingMode: 'filled', placeholder: 'Username'}" dataField="userName"
+						  editorType="dxTextBox">
+					<dxi-validation-rule message="Username is required" type="required"></dxi-validation-rule>
+					<dxo-label [visible]="false"></dxo-label>
+				</dxi-item>
+
+				<dxi-item [editorOptions]="{ stylingMode: 'filled', placeholder: 'Password', mode: 'password' }" dataField="password"
+						  editorType="dxTextBox">
+					<dxi-validation-rule message="Password is required" type="required"></dxi-validation-rule>
+					<dxo-label [visible]="false"></dxo-label>
+				</dxi-item>
+
+				<dxi-item [editorOptions]="{ text: 'Remember me', elementAttr: { class: 'form-text' } }" dataField="rememberMe"
+						  editorType="dxCheckBox">
+					<dxo-label [visible]="false"></dxo-label>
+				</dxi-item>
+
+				<dxi-item itemType="button">
+					<dxo-button-options [template]="'signInTemplate'" [useSubmitBehavior]="true" type="default" width="100%">
+					</dxo-button-options>
+				</dxi-item>
+
+				<ng-container *dxTemplate="let item of 'signInTemplate'">
+					  <span class="dx-button-text">
+						<ng-container *ngIf="isLoading; else notLoading">
+						  <dx-load-indicator [visible]="true" height="24px" width="24px"></dx-load-indicator>
+						</ng-container>
+						<ng-template #notLoading>Sign In</ng-template>
+					  </span>
+				</ng-container>
+
+			</dx-form>
+		</form>
+		<p class="version-no">V2.0.0</p>
+	</div>
+</dx-scroll-view>

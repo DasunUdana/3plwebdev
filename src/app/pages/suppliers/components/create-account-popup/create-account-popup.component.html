@@ -1,0 +1,74 @@
+<dx-popup
+	[width]="500"
+	[height]="'auto'"
+	[showTitle]="true"
+	title="Create Account"
+	[dragEnabled]="false"
+	[closeOnOutsideClick]="false"
+	(onShowing)="onShowingPopup($event)"
+	(onHidden)="onClosePopup($event)"
+	[showCloseButton]="true"
+	[(visible)]="visible">
+	<div *dxTemplate="let data of 'content'">
+		<p>Enter UserName, Email and Password and press the create an account button for create an account for supplier</p>
+		<br/>
+		<form (submit)="handleSubmit($event)">
+			<dx-form [(formData)]="account" id="form" labelLocation="top">
+				<dxi-item
+					[editorOptions]="{inputAttr: { autocomplete: 'username-field' }}"
+					[isRequired]="true" dataField="userName"></dxi-item>
+				<dxi-item
+					[editorOptions]="{inputAttr: { autocomplete: 'email-field' }}"
+					[isRequired]="true" dataField="email">
+					<dxi-validation-rule
+						type="required"
+						message="Email is required">
+					</dxi-validation-rule>
+					<dxi-validation-rule
+						type="email"
+						message="Email is invalid">
+					</dxi-validation-rule>
+				</dxi-item>
+				<dxi-item dataField="password"
+						  helpText="Password must have at least 8 characters with at
+							  least one Capital letter, at least one lower case letter and at least one number or
+							  special character."
+						  [editorOptions]="{ mode: 'password', autocomplete: 'password-field' }">
+					<dxi-validation-rule
+						type="required"
+						message="Password is required">
+					</dxi-validation-rule>
+					<dxi-validation-rule type="pattern"
+										 pattern="^.*(?=.{8,})(?=.*\d)(?=.*[a-zA-Z]).*$"
+										 message="Password must have at least 8 characters with at least one Capital letter,
+										 at least one lower case letter and at least one number or special character.">
+					</dxi-validation-rule>
+				</dxi-item>
+				<dxi-item
+					dataField="confirmationPassword"
+					editorType="dxTextBox"
+					[editorOptions]="{ mode: 'password', autocomplete: 'confirm-password-field' }">
+					<dxo-label
+						text="Confirm Password">
+					</dxo-label>
+					<dxi-validation-rule
+						type="required"
+						message="Confirm Password is required">
+					</dxi-validation-rule>
+					<dxi-validation-rule
+						type="compare"
+						[comparisonTarget]="passwordComparison"
+						message="Password and Confirm Password do not match">
+					</dxi-validation-rule>
+				</dxi-item>
+				<dxi-item itemType="empty" [colSpan]="1"></dxi-item>
+				<dxi-item [buttonOptions]="{ text:'Create an account', useSubmitBehavior: true, icon: 'save', type:'success'}" cssClass="btn-save-supplier"
+						  itemType="button">
+				</dxi-item>
+			</dx-form>
+		</form>
+	</div>
+</dx-popup>
+
+
+

@@ -1,0 +1,99 @@
+<div class="responsive-paddings">
+
+	<div class="page-header">
+		<h2>Users</h2>
+		<h5>User List</h5>
+
+		<dx-button (onClick)="openUser(0)" class="btn-new-user" icon="add" text="New User" type="normal">
+		</dx-button>
+	</div>
+
+	<dx-data-grid #grid (onRowClick)="openUser($event.data.id)" [columnAutoWidth]="true"
+				  [columnHidingEnabled]="true"
+				  [rowAlternationEnabled]="true"
+				  [dataSource]="userStore"
+				  [showBorders]="true" class="dx-card wide-card"
+				  keyExpr="Id">
+
+		<dxo-paging [pageSize]="10"></dxo-paging>
+		<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+		<dxo-filter-row [visible]="true"></dxo-filter-row>
+		<dxi-column caption="User Name" dataField="userName">
+		</dxi-column>
+		<dxi-column caption="Email" dataField="email">
+		</dxi-column>
+		<dxi-column dataField="active">
+		</dxi-column>
+		<dxi-column [width]="130" type="buttons">
+			<dxi-button visible="true" hint="Edit User"
+						cssClass="default-button"
+						icon="icon ion-md-create"
+						[onClick]="editUser"></dxi-button>
+			<dxi-button visible="true" hint="Reset Password"
+						cssClass="info-button"
+						icon="icon ion-md-medical"
+						[onClick]="resetPassword"></dxi-button>
+			<dxi-button [visible]="isDeactivateButtonVisible" hint="Deactivate"
+						cssClass="default-button"
+						icon="icon ion-md-lock" [onClick]="setUserStatus"></dxi-button>
+			<dxi-button [visible]="isActiveButtonVisible" hint="Active"
+						cssClass="default-button"
+						icon="icon ion-md-unlock" [onClick]="setUserStatus"></dxi-button>
+			<dxi-button visible="true" hint="Delete" icon="icon ion-md-trash"
+						cssClass="danger-button" [onClick]="deleteUser"></dxi-button>
+		</dxi-column>
+
+	</dx-data-grid>
+</div>
+
+<dx-popup
+	[width]="500"
+	[height]="'auto'"
+	[showTitle]="true"
+	title="Reset Password"
+	[dragEnabled]="false"
+	[closeOnOutsideClick]="false"
+	[showCloseButton]="true"
+	[(visible)]="resetPasswordPopupVisible">
+	<div *dxTemplate="let data of 'content'">
+		<form (submit)="handleResetPasswordForm($event)">
+			<p class="popup-message">Enter your new password</p>
+			<br/>
+			<dx-form #resetPasswordForm [showColonAfterLabel]="true" [formData]="resetPasswordFormData" labelLocation="top">
+				<dxi-item [editorOptions]="{ readOnly: true }" [isRequired]="true" dataField="userName"></dxi-item>
+				<dxi-item dataField="password"
+						  helpText="Password must have at least 8 characters with at
+							  least one Capital letter, at least one lower case letter and at least one number or
+							  special character."
+						  [editorOptions]="{ mode: 'password' }">
+					<dxi-validation-rule
+						type="required"
+						message="Password is required">
+					</dxi-validation-rule>
+				</dxi-item>
+				<dxi-item
+					dataField="confirmationPassword"
+					editorType="dxTextBox"
+					[editorOptions]="{ mode: 'password' }">
+					<dxo-label
+						text="Confirm Password">
+					</dxo-label>
+					<dxi-validation-rule
+						type="required"
+						message="Confirm Password is required">
+					</dxi-validation-rule>
+					<dxi-validation-rule
+						type="compare"
+						[comparisonTarget]="passwordComparison"
+						message="Password and Confirm Password do not match">
+					</dxi-validation-rule>
+
+				</dxi-item>
+				<dxi-item
+					itemType="button"
+					[buttonOptions]="{ text: 'Reset Password', useSubmitBehavior: true }">
+				</dxi-item>
+			</dx-form>
+		</form>
+	</div>
+</dx-popup>

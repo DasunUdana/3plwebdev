@@ -1,0 +1,35 @@
+<div class="responsive-paddings">
+	<div class="page-header">
+		<h2>Logs</h2>
+		<h5>Log details of the application</h5>
+	</div>
+
+	<h3>Database Audits</h3>
+
+	<dx-data-grid [columnAutoWidth]="true"
+				  [columnHidingEnabled]="true"
+				  [dataSource]="auditLogDataSource"
+				  [rowAlternationEnabled]="true"
+				  [remoteOperations]="true" [showBorders]="true"
+				  class="dx-card wide-card" keyExpr="id">
+
+		<dxo-paging [pageSize]="10"></dxo-paging>
+		<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+		<dxo-filter-row [visible]="true"></dxo-filter-row>
+		<dxi-column [width]="200" caption="Date" dataType="datetime" sortOrder="desc" dataField="created">
+		</dxi-column>
+		<dxi-column [width]="120" dataField="tableName">
+		</dxi-column>
+		<dxi-column [width]="120" dataField="type">
+		</dxi-column>
+		<dxi-column [width]="120" dataField="userName">
+		</dxi-column>
+		<dxi-column [width]="120" dataField="machineName">
+		</dxi-column>
+		<dxi-column dataField="newValues">
+		</dxi-column>
+		<dxi-column dataField="oldValues">
+		</dxi-column>
+	</dx-data-grid>
+</div>
+

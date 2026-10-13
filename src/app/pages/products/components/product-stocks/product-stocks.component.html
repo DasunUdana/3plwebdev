@@ -1,0 +1,40 @@
+<h4 class="sub-header">Product Stocks</h4>
+
+<dx-data-grid id="productStocksGrid" [columnAutoWidth]="true" [columnHidingEnabled]="true"
+			  [dataSource]="productStocksDataSource"
+			  [rowAlternationEnabled]="true"
+			  [remoteOperations]="true" [showBorders]="true" class="dx-card wide-card"
+			  keyExpr="id">
+	<dxo-paging [pageSize]="10"></dxo-paging>
+	<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+	<dxo-filter-row [visible]="true"></dxo-filter-row>
+
+	<dxi-column caption="Warehouse" dataField="wareHouseId">
+		<dxo-lookup
+			[dataSource]="warehouseDataSource"
+			displayExpr="name"
+			valueExpr="id">
+		</dxo-lookup>
+	</dxi-column>
+	<dxi-column [width]="200" dataField="quantity" dataType="number">
+	</dxi-column>
+	<dxi-column [width]="200" dataField="dispatchReturnQuantity" dataType="number">
+	</dxi-column>
+	<dxi-column [width]="200" dataField="damageStockQuantity" dataType="number">
+	</dxi-column>
+	<dxi-column [width]="200" dataField="salesReturnQuantity" dataType="number">
+	</dxi-column>
+	<dxi-column [visible]="canMoveStock()" [width]="110" type="buttons">
+		<dxi-button hint="Transfer Dispatch Return Stock"
+					cssClass="default-button"
+					icon="icon ion-md-train"
+					[onClick]="transferDispatchReturnStock"></dxi-button>
+		<dxi-button hint="Transfer Sales Return Stock"
+					cssClass="default-button"
+					icon="icon ion-md-cart"
+					[onClick]="transferSalesReturnStock"></dxi-button>
+	</dxi-column>
+
+</dx-data-grid>
+
+

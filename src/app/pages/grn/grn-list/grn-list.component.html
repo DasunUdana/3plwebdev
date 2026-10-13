@@ -1,0 +1,61 @@
+<div class="responsive-paddings">
+
+	<div class="page-header">
+		<h2>Good Received Notes</h2>
+		<h5>List Of Good Received Notes</h5>
+		<dx-button (click)="openGrn(0)" class="btn-new-grn" icon="add" text="New Good Received Note" type="normal">
+		</dx-button>
+	</div>
+
+	<dx-data-grid (onRowClick)="openGrn($event.data.id)" [columnAutoWidth]="true"
+				  [columnHidingEnabled]="true"
+				  [rowAlternationEnabled]="true"
+				  [dataSource]="grnDataSource" [remoteOperations]="true" [showBorders]="true"
+				  class="dx-card wide-card" keyExpr="id">
+
+		<dxo-paging [pageSize]="10"></dxo-paging>
+		<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+		<dxo-filter-row [visible]="true"></dxo-filter-row>
+		<dxi-column caption="GRN Number" dataField="grnNo">
+		</dxi-column>
+		<dxi-column dataField="supplierInvoiceNumber"></dxi-column>
+		<dxi-column caption="Date" dataField="created" dataType="date" sortOrder="desc">
+		</dxi-column>
+		<dxi-column caption="Type" dataField="type">
+			<dxo-lookup
+				[dataSource]="metaData.grnTypes"
+				displayExpr="name"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column caption="Purchase Order" dataField="purchaseOrderId">
+			<dxo-lookup
+				[dataSource]="purchaseOrderDataSource"
+				displayExpr="poNumber"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column caption="Supplier" dataField="supplierId">
+			<dxo-lookup
+				[dataSource]="supplierDataSource"
+				displayExpr="supplierName"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column caption="Warehouse" dataField="wareHouseId">
+			<dxo-lookup
+				[dataSource]="warehouseDataSource"
+				displayExpr="name"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column [width]="110" type="buttons">
+			<dxi-button hint="View Good Received Note"
+						cssClass="info-button"
+						icon="icon ion-md-information-circle"
+						[onClick]="viewGrn"></dxi-button>
+		</dxi-column>
+	</dx-data-grid>
+</div>
+
+

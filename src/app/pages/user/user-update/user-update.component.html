@@ -1,0 +1,82 @@
+<div class="responsive-paddings">
+
+	<div class="page-header">
+		<h2>{{user.id == 0 ? 'New' : 'Update' }} User</h2>
+		<h5>Details of Users</h5>
+		<dx-button (onClick)="backToUsers()" class="btn-back" type="back">
+		</dx-button>
+	</div>
+
+	<div>
+		<form (submit)="handleSubmit($event)">
+			<dx-form [(formData)]="user" [colCount]="2" id="form" labelLocation="top">
+				<dxi-item caption="General" itemType="group">
+					<dxi-item [editorOptions]="{ readonly: true }" [isRequired]="true" dataField="userName"></dxi-item>
+					<dxi-item [isRequired]="true" dataField="email">
+						<dxi-validation-rule
+							type="required"
+							message="Email is required">
+						</dxi-validation-rule>
+						<dxi-validation-rule
+							type="email"
+							message="Email is invalid">
+						</dxi-validation-rule>
+					</dxi-item>
+					<dxi-item [editorOptions]="{ dataSource: metadata.roles }"
+							  [isRequired]="true"
+							  [label]="{ text: 'Role' }" dataField="role" editorType="dxSelectBox">
+					</dxi-item>
+					<dxi-item isRequired="true" dataField="active" editorType="dxCheckBox">
+					</dxi-item>
+				</dxi-item>
+				<dxi-item caption="Credentials" [visible]="user.id == 0" itemType="group">
+					<dxi-item dataField="password"
+							  [editorOptions]="{ mode: 'password' }" helpText="Password must have at least 8 characters with at
+							  least one Capital letter, at least one lower case letter and at least one number or
+							  special character.">
+						<dxi-validation-rule
+							type="required"
+							message="Password is required">
+						</dxi-validation-rule>
+						<dxi-validation-rule type="pattern"
+											 pattern="^.*(?=.{8,})(?=.*\d)(?=.*[a-zA-Z]).*$"
+											 message="Password must have at least 8 characters with at least one Capital letter,
+										 at least one lower case letter and at least one number or special character.">
+						</dxi-validation-rule>
+					</dxi-item>
+					<dxi-item
+						dataField="confirmationPassword"
+						editorType="dxTextBox"
+						[editorOptions]="{ mode: 'password' }">
+						<dxo-label
+							text="Confirm Password">
+						</dxo-label>
+						<dxi-validation-rule
+							type="required"
+							message="Confirm Password is required">
+						</dxi-validation-rule>
+						<dxi-validation-rule
+							type="compare"
+							[comparisonTarget]="passwordComparison"
+							message="Password and Confirm Password do not match">
+						</dxi-validation-rule>
+					</dxi-item>
+				</dxi-item>
+				<dxi-item [colSpan]="2" caption="Permissions" itemType="group">
+					<dxi-item [editorOptions]="{ dataSource: warehouseStore, displayExpr: 'name', valueExpr: 'id', searchEnabled: true,
+						searchExpr: ['code', 'name'], itemTemplate: 'warehouseField'}"
+							  [label]="{ text: 'Warehouses' }" dataField="wareHouses" editorType="dxTagBox">
+					</dxi-item>
+				</dxi-item>
+				<dxi-item [colSpan]="2" itemType="empty"></dxi-item>
+				<dxi-item [colSpan]="2" [buttonOptions]="{ text:'Save Changes', useSubmitBehavior: true, icon: 'save', type:'success'}" cssClass="btn-save-supplier"
+						  itemType="button">
+				</dxi-item>
+				<div *dxTemplate="let item of 'warehouseField'">
+					<div>{{item?.code}} - {{item?.name}}</div>
+				</div>
+			</dx-form>
+		</form>
+	</div>
+</div>
+

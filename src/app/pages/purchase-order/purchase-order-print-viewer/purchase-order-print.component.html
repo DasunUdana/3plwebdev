@@ -1,0 +1,9 @@
+<div class="">
+	<div class="report-container">
+		<dx-report-viewer [reportUrl]="reportUrl" height="100%">
+			<dxrv-request-options [invokeAction]="invokeAction" [host]="hostUrl"></dxrv-request-options>
+			<dxrv-callbacks
+				(BeforeRender)="beforeRender($event)"></dxrv-callbacks>
+		</dx-report-viewer>
+	</div>
+</div>

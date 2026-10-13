@@ -1,0 +1,279 @@
+<div class="responsive-paddings supplier-details">
+
+	<div class="page-header">
+		<h2>Supplier Details</h2>
+		<h5>Details of supplier</h5>
+		<dx-button (onClick)="backToSuppliers()" class="btn-back" text="Back to List" type="back">
+		</dx-button>
+	</div>
+
+	<div>
+		<dx-form colCount="2" [(formData)]="supplier" [readOnly]="true" id="form" labelLocation="top">
+			<dxi-item caption="General" icon="icon ion-md-home" itemType="group">
+				<dxi-item [isRequired]="true" dataField="code"></dxi-item>
+				<dxi-item [isRequired]="true" dataField="supplierName"></dxi-item>
+				<dxi-item>
+					<dxo-label text="Is Active"></dxo-label>
+					<dx-check-box [(value)]="supplier.active">
+					</dx-check-box>
+				</dxi-item>
+				<dxi-item dataField="businessRegistrationId"></dxi-item>
+				<dxi-item dataField="vatNumber"></dxi-item>
+			</dxi-item>
+			<dxi-item caption="Contact Informations" itemType="group" icon="icon ion-md-card" colCount="2">
+				<dxi-item [colSpan]="2"
+						  [editorOptions]="{inputAttr: { autocomplete: 'contact-person-field' }}"
+						  dataField="contact.contactPerson">
+					<dxo-label text="Contact Person"></dxo-label>
+				</dxi-item>
+				<dxi-item
+					[editorOptions]="{inputAttr: { autocomplete: 'phone-field' }}"
+					[isRequired]="true" dataField="contact.phone">
+					<dxo-label text="Phone"></dxo-label>
+				</dxi-item>
+				<dxi-item
+					[editorOptions]="{inputAttr: { autocomplete: 'mobile-field' }}"
+					dataField="contact.mobile">
+					<dxo-label text="Mobile"></dxo-label>
+				</dxi-item>
+				<dxi-item
+					[editorOptions]="{inputAttr: { autocomplete: 'email-field' }}"
+					[colSpan]="2" dataField="contact.email">
+					<dxo-label text="Email"></dxo-label>
+				</dxi-item>
+				<dxi-item
+					[editorOptions]="{inputAttr: { autocomplete: 'address-first-name-field' }}"
+					dataField="address.firstName">
+					<dxo-label text="First Name"></dxo-label>
+				</dxi-item>
+				<dxi-item
+					[editorOptions]="{inputAttr: { autocomplete: 'address-last-name-field' }}"
+					dataField="address.lastName">
+					<dxo-label text="Last Name"></dxo-label>
+				</dxi-item>
+				<dxi-item [isRequired]="true"
+						  [editorOptions]="{inputAttr: { autocomplete: 'address-line-1-field' }}"
+						  dataField="address.addressLine1">
+					<dxo-label text="Address Line 1"></dxo-label>
+				</dxi-item>
+				<dxi-item
+					[editorOptions]="{inputAttr: { autocomplete: 'address-line-2-field' }}"
+					dataField="address.addressLine2">
+					<dxo-label text="Address Line 2"></dxo-label>
+				</dxi-item>
+
+				<dxi-item *ngIf="supplier && supplier.address">
+					<dxo-label text="City"></dxo-label>
+					<dx-select-box [(value)]="supplier.address.cityId" [dataSource]="cityStore"
+								   [inputAttr]="{ autocomplete : 'city-field'}"
+								   [showDataBeforeSearch]="true"
+								   [readOnly]="true"
+								   [minSearchLength]="3" [searchEnabled]="true" [searchExpr]="'cityName'"
+								   [searchMode]="'contains'" [searchTimeout]="200" displayExpr="cityName"
+								   valueExpr="id"></dx-select-box>
+				</dxi-item>
+
+				<dxi-item
+					[editorOptions]="{inputAttr: { autocomplete: 'postal-code-field' }}"
+					[isRequired]="true" dataField="address.postalCode">
+					<dxo-label text="Postal Code"></dxo-label>
+				</dxi-item>
+
+			</dxi-item>
+			<dxi-item caption="Supplier Charges" itemType="group" icon="icon ion-md-cash" colCount="2">
+				<dxi-item dataField="supplierCharges.allocatedUnits"
+						  helpText="Number of allocated space in warehouses (cubic meters)" editorType="dxNumberBox">
+					<dxo-label text="Allocated Units"></dxo-label>
+				</dxi-item>
+				<dxi-item dataField="supplierCharges.storageChargePerUnit"
+						  helpText="Allocated charge per unit in Rs."
+						  editorType="dxNumberBox">
+					<dxo-label text="Storage Charge Per Unit"></dxo-label>
+				</dxi-item>
+				<dxi-item dataField="supplierCharges.additionalChargePerUnitPrice"
+						  helpText="Additional charge for warehouses space per unit in Rs."
+						  editorType="dxNumberBox">
+					<dxo-label text="Additional Charge Per Unit Price"></dxo-label>
+				</dxi-item>
+				<dxi-item dataField="supplierCharges.handlingCharge"
+						  helpText="Handling charge for packaging and other in Rs."
+						  editorType="dxNumberBox">
+					<dxo-label text="Handling Charge"></dxo-label>
+				</dxi-item>
+			</dxi-item>
+			<dxi-item caption="Policies" itemType="group" icon="icon ion-md-book" colCount="2">
+				<dxi-item>
+					<dxo-label text="Invoice Policy"></dxo-label>
+					<dx-text-area readOnly="true" [(value)]="supplier.invoicePolicy" [height]="90">
+					</dx-text-area>
+				</dxi-item>
+				<dxi-item>
+					<dxo-label text="Return Policy"></dxo-label>
+					<dx-text-area readOnly="true" [(value)]="supplier.returnPolicy" [height]="90">
+					</dx-text-area>
+				</dxi-item>
+			</dxi-item>
+			<dxi-item caption="Pickup Address" colSpan="2" itemType="group" icon="icon ion-md-car">
+				<dxi-item *ngIf="supplier && supplier.pickupAddress" [colSpan]="2"
+						  cssClass="pickup-list-address-container dx-card responsive-paddings" itemType="group">
+					<dx-list [dataSource]="supplier.pickupAddress"
+							 id="list">
+						<div *dxTemplate="let item of 'item'">
+							<div>
+								<div>{{getPickupAddressDisplayStrinng(item)}}</div>
+							</div>
+						</div>
+					</dx-list>
+				</dxi-item>
+			</dxi-item>
+		</dx-form>
+	</div>
+
+	<h4 class="sub-header">Storage</h4>
+	<div class="space-pie-chart-section">
+
+		<div class="pie-chart">
+			<dx-pie-chart
+				id="pie-space-by-warehouses"
+				title="Space By Warehouses"
+				palette="bright"
+				[dataSource]="supplierStorageDetails.totalStorageByWareHouses">
+				<dxo-export [enabled]="false"></dxo-export>
+				<dxo-legend
+					orientation="horizontal"
+					itemTextPosition="right"
+					horizontalAlignment="center"
+					verticalAlignment="bottom"
+					[columnCount]="4"></dxo-legend>
+				<dxo-export [enabled]="true"></dxo-export>
+				<dxi-series
+					argumentField="wareHouseName"
+					valueField="totalStorage">
+					<dxo-label
+						[visible]="true"
+						position="columns"
+						[customizeText]="customizeLabelStorageByWareHouse">
+						<dxo-font [size]="16"></dxo-font>
+						<dxo-connector
+							[visible]="true"
+							[width]="0.5"></dxo-connector>
+					</dxo-label>
+				</dxi-series>
+			</dx-pie-chart>
+		</div>
+
+		<div class="pie-chart">
+			<h4 class="total-used-title">Total Used Percentage</h4>
+			<h1 class="total-used-pecentage-val">{{ ((supplierStorageDetails.totalStorage/supplierStorageDetails.allocatedStorage) * 100).toFixed(2) }}%</h1>
+		</div>
+
+	</div>
+
+	<div *ngIf="canManageSupplierAccount()">
+		<h4 class="sub-header">Supplier Account Details</h4>
+
+		<dx-button
+			icon="icon ion-md-person-add"
+			stylingMode="outlined"
+			type="normal"
+			(onClick)="createAccount()"
+			text="Create Account">
+		</dx-button>
+
+		<br/><br/>
+
+		<dx-data-grid [columnAutoWidth]="true"
+					  [columnHidingEnabled]="true"
+					  [visible]="supplier != null"
+					  [rowAlternationEnabled]="true"
+					  [dataSource]="userDataSource"
+					  [remoteOperations]="true" [showBorders]="true" class="dx-card wide-card"
+					  keyExpr="Id">
+			<dxo-paging [pageSize]="10"></dxo-paging>
+			<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+			<dxo-filter-row [visible]="false"></dxo-filter-row>
+			<dxi-column caption="User Name" dataField="userName">
+			</dxi-column>
+			<dxi-column caption="Email" dataField="email">
+			</dxi-column>
+			<dxi-column dataField="active" [width]="100">
+			</dxi-column>
+			<dxi-column [width]="110" type="buttons">
+				<dxi-button visible="true" hint="Reset Password"
+					cssClass="info-button"
+					icon="icon ion-md-medical"
+					[onClick]="resetPassword">
+				</dxi-button>
+				<dxi-button [visible]="isDeactivateButtonVisible" hint="Deactivate"
+							cssClass="default-button"
+							icon="icon ion-md-lock" [onClick]="setUserStatus"></dxi-button>
+				<dxi-button [visible]="isActiveButtonVisible" hint="Active"
+							cssClass="default-button"
+							icon="icon ion-md-unlock" [onClick]="setUserStatus"></dxi-button>
+				<dxi-button visible="true" hint="Delete" icon="icon ion-md-trash"
+							cssClass="danger-button" [onClick]="deleteUser"></dxi-button>
+			</dxi-column>
+		</dx-data-grid>
+	</div>
+
+</div>
+
+<app-create-account-popup [supplierId]="supplier.id"
+						  [visible]="showCreateAccountPopup"
+						  (onSuccess)="onCreateAccount()"
+						  (onCancel)="onCreateAccountCancel()">
+</app-create-account-popup>
+
+<dx-popup
+	[width]="500"
+	[height]="'auto'"
+	[showTitle]="true"
+	title="Reset Password"
+	[dragEnabled]="false"
+	[closeOnOutsideClick]="false"
+	[showCloseButton]="true"
+	[(visible)]="resetPasswordPopupVisible">
+	<div *dxTemplate="let data of 'content'">
+		<form (submit)="handleResetPasswordForm($event)">
+			<p class="popup-message">Enter your new password</p>
+			<br/>
+			<dx-form #resetPasswordForm [showColonAfterLabel]="true" [formData]="resetPasswordFormData" labelLocation="top">
+				<dxi-item [editorOptions]="{ readOnly: true }" [isRequired]="true" dataField="userName"></dxi-item>
+				<dxi-item dataField="password"
+						  helpText="Password must have at least 8 characters with at
+							  least one Capital letter, at least one lower case letter and at least one number or
+							  special character."
+						  [editorOptions]="{ mode: 'password' }">
+					<dxi-validation-rule
+						type="required"
+						message="Password is required">
+					</dxi-validation-rule>
+				</dxi-item>
+				<dxi-item
+					dataField="confirmationPassword"
+					editorType="dxTextBox"
+					[editorOptions]="{ mode: 'password' }">
+					<dxo-label
+						text="Confirm Password">
+					</dxo-label>
+					<dxi-validation-rule
+						type="required"
+						message="Confirm Password is required">
+					</dxi-validation-rule>
+					<dxi-validation-rule
+						type="compare"
+						[comparisonTarget]="passwordComparison"
+						message="Password and Confirm Password do not match">
+					</dxi-validation-rule>
+
+				</dxi-item>
+				<dxi-item
+					itemType="button"
+					[buttonOptions]="{ text: 'Reset Password', useSubmitBehavior: true }">
+				</dxi-item>
+			</dx-form>
+		</form>
+	</div>
+</dx-popup>
+
+

@@ -1,0 +1,46 @@
+<div class="responsive-paddings">
+	<div class="page-header">
+		<h2>Stock Transfers</h2>
+		<h5>Stock Transfers List</h5>
+		<dx-button (click)="openStockTransfer(0)" class="btn-new-stock-transfer" icon="add" text="New Stock Transfer"
+				   type="normal">
+		</dx-button>
+	</div>
+
+	<dx-data-grid (onRowClick)="openStockTransfer($event.data.id)" [columnAutoWidth]="true"
+				  [columnHidingEnabled]="true"
+				  [dataSource]="stockTransferDataSource"
+				  [rowAlternationEnabled]="true"
+				  [remoteOperations]="true" [showBorders]="true"
+				  class="dx-card wide-card" keyExpr="id">
+
+		<dxo-paging [pageSize]="10"></dxo-paging>
+		<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+		<dxo-filter-row [visible]="true"></dxo-filter-row>
+		<dxi-column caption="Stock Transfer Number" dataField="stockTransferNumber">
+		</dxi-column>
+		<dxi-column caption="Reason" dataField="reason">
+		</dxi-column>
+		<dxi-column caption="To" dataField="toWareHouseId">
+			<dxo-lookup
+				[dataSource]="warehouseDataSource"
+				displayExpr="name"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column caption="From" dataField="fromWareHouseId">
+			<dxo-lookup
+				[dataSource]="warehouseDataSource"
+				displayExpr="name"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column [width]="110" type="buttons">
+			<dxi-button hint="View Stock Transfer"
+						cssClass="info-button"
+						icon="icon ion-md-information-circle"
+						[onClick]="viewStockTransfer"></dxi-button>
+		</dxi-column>
+	</dx-data-grid>
+</div>
+

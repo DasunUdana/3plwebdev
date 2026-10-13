@@ -1,0 +1,59 @@
+<div class="responsive-paddings">
+
+	<div class="page-header">
+		<h2>{{warehouse.id === 0 ? 'New Warehouse' : 'Edit Warehouse'}}</h2>
+		<h5>Warehouse details</h5>
+		<dx-button (onClick)="backToList()" class="btn-back" text="Back to List" type="back">
+		</dx-button>
+	</div>
+
+	<div>
+		<form (submit)="handleSubmit($event)">
+			<dx-form [colCount]="2" [formData]="warehouse" id="form" labelLocation="top">
+
+				<dxi-item [colSpan]="2" [colCount]="2" caption="General Details" itemType="group">
+					<dxi-item [isRequired]="true" dataField="code"></dxi-item>
+					<dxi-item [isRequired]="true" dataField="name"></dxi-item>
+					<dxi-item dataField="active" editorType="dxCheckBox"></dxi-item>
+				</dxi-item>
+
+				<dxi-item [colSpan]="2" caption="Address Details" itemType="group">
+					<dxi-item [colCount]="2" itemType="group">
+						<dxi-item [editorOptions]="{inputAttr: { autocomplete: 'address-line-1' }}" [isRequired]="true"
+								  [label]="{text: 'Address Line 1'}"
+								  dataField="address.addressLine1"></dxi-item>
+						<dxi-item [editorOptions]="{inputAttr: { autocomplete: 'address-line-2' }}" [label]="{text: 'Address Line 2'}"
+								  dataField="address.addressLine2"></dxi-item>
+						<dxi-item [colSpan]="1" [editorOptions]="{ dataSource: cityStore, displayExpr: 'cityName',
+									valueExpr: 'id', searchEnabled: true, searchExpr: ['cityName']}"
+								  [isRequired]="true"
+								  [label]="{ text: 'City' }" dataField="address.cityId" editorType="dxLookup">
+						</dxi-item>
+						<dxi-item [editorOptions]="{inputAttr: { autocomplete: 'postal-code' }}" [isRequired]="true" [label]="{text: 'Postal Code'}"
+								  dataField="address.postalCode"></dxi-item>
+					</dxi-item>
+				</dxi-item>
+
+				<dxi-item caption="Contact Details" itemType="group">
+					<dxi-item [isRequired]="true" [editorOptions]="{inputAttr: { autocomplete: 'phone-field' }, mask : '0000000000',
+								maskInvalidMessage : 'Phone number is invalid'}"
+							  dataField="phone">
+						<dxo-label text="Phone"></dxo-label>
+					</dxi-item>
+				</dxi-item>
+
+				<dxi-item [colCount]="3" caption="Storage" itemType="group">
+					<dxi-item [isRequired]="true" dataField="width" helpText="Warehouse storage space width (m)"></dxi-item>
+					<dxi-item [isRequired]="true" dataField="height" helpText="Product storage space height (m)"></dxi-item>
+					<dxi-item [isRequired]="true" dataField="length" helpText="Product storage space length (m)"></dxi-item>
+				</dxi-item>
+
+				<dxi-item itemType="empty"></dxi-item>
+
+				<dxi-item [buttonOptions]="{text: 'Save Changes', useSubmitBehavior: true, icon: 'save', type: 'success', class: 'btn-save-warehouse' }" class="btn-save-warehouse"
+						  itemType="button">
+				</dxi-item>
+			</dx-form>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,53 @@
+<div class="responsive-paddings">
+
+	<div class="page-header">
+		<h2>Purchase Orders</h2>
+		<h5>List Of Purchase Orders</h5>
+		<dx-button (onClick)="openPurchaseOrder(0)" class="btn-new-purchase-order" icon="icon ion-md-add" text="New Purchase Order" type="normal">
+		</dx-button>
+	</div>
+
+	<dx-data-grid [columnAutoWidth]="true"
+				  [columnHidingEnabled]="true"
+				  [rowAlternationEnabled]="true"
+				  [dataSource]="purchaseOrderDataSource"
+				  [remoteOperations]="true" [showBorders]="true"
+				  class="dx-card wide-card" keyExpr="id">
+
+		<dxo-paging [pageSize]="10"></dxo-paging>
+		<dxo-pager [showInfo]="true" [showPageSizeSelector]="true"></dxo-pager>
+		<dxo-filter-row [visible]="true"></dxo-filter-row>
+		<dxi-column caption="Date" dataField="created" dataType="date" sortOrder="desc">
+		</dxi-column>
+		<dxi-column caption="PO Number" dataField="poNumber">
+		</dxi-column>
+		<dxi-column caption="Status" dataField="status">
+			<dxo-lookup
+				[dataSource]="metaData.purchaseOrderStatus"
+				displayExpr="name"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column caption="Supplier" dataField="supplierId">
+			<dxo-lookup
+				[dataSource]="supplierDataSource"
+				displayExpr="supplierName"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column caption="Warehouse" dataField="wareHouseId">
+			<dxo-lookup
+				[dataSource]="warehouseDataSource"
+				displayExpr="name"
+				valueExpr="id">
+			</dxo-lookup>
+		</dxi-column>
+		<dxi-column [width]="110" type="buttons">
+			<dxi-button [visible]="canViewPurchaseOrder" hint="View Purchase Order"
+						cssClass="info-button"
+						icon="icon ion-md-information-circle"
+						[onClick]="editorPurchaseOrder"></dxi-button>
+		</dxi-column>
+	</dx-data-grid>
+</div>
+

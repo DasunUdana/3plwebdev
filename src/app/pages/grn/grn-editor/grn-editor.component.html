@@ -1,0 +1,127 @@
+<div class="dx-card responsive-paddings" (keyup)="keyUp($event)">
+
+	<div class="page-header">
+		<h2>Good Received Note</h2>
+		<h5>Details of Good Received Note</h5>
+		<dx-button (onClick)="backToGrnList()" class="btn-back" type="back">
+		</dx-button>
+	</div>
+
+	<dx-button
+		[visible]="grn.id != 0"
+		icon="print"
+		stylingMode="outlined"
+		type="default"
+		(onClick)="grnView()"
+		text="Print Good Received Note">
+	</dx-button>
+
+	<br/><br/>
+
+	<form (submit)="handleSubmit($event)">
+		<dx-form [(formData)]="grn" [colCount]="4" [readOnly]="grn.id != 0" id="form" labelLocation="top" method="post">
+			<dxi-item [colCount]="6" [colSpan]="4" caption="General Details" itemType="group">
+				<dxi-item [colSpan]="2" dataField="grnNo" [visible]="grn.id !=0"></dxi-item>
+				<dxi-item [colSpan]="2" dataField="created" editorType="dxDateBox" [editorOptions]="{ dataType:'date', format: 'shortDateShortTime' }"
+						  [visible]="grn.id !=0"></dxi-item>
+				<dxi-item [colSpan]="2" [editorOptions]="{ dataSource: metadata.grnTypes, displayExpr: 'name', valueExpr: 'id', onValueChanged: onGrnTypeChange }"
+						  [isRequired]="true"
+						  [label]="{ text: 'Grn Type' }" dataField="type" editorType="dxSelectBox">
+				</dxi-item>
+				<dxi-item [visible]="grn.type == 0" [colSpan]="2" [editorOptions]="{ dataSource: purchaseOrderStore,
+												displayExpr: 'poNumber', valueExpr: 'id', onValueChanged: onPurchaseOrderChange, visible: grn.type == 0,
+												fieldTemplate: 'purchaseOrderField', itemTemplate: 'purchaseOrderField'}"
+						  [isRequired]="false"
+						  [label]="{ text: 'PO Number' }" dataField="purchaseOrderId" editorType="dxLookup">
+				</dxi-item>
+				<dxi-item [visible]="grn.type == 1" [colSpan]="2" [editorOptions]="{ dataSource: grnStore,
+												displayExpr: 'grnNo', valueExpr: 'id', onValueChanged: onGrnChange, visible: grn.type == 1 }"
+						  [isRequired]="false"
+						  [label]="{ text: 'Grn Received Number' }" dataField="returnGoodReceivedNoteId" editorType="dxSelectBox">
+				</dxi-item>
+				<dxi-item [colSpan]="2" dataField="supplierInvoiceNumber"></dxi-item>
+				<dxi-item [colSpan]="2" [editorOptions]="{ dataSource: warehouseStore, displayExpr: 'name', valueExpr: 'id', searchEnabled: true, searchExpr: ['code', 'name'],
+					fieldTemplate: 'warehouseField', itemTemplate: 'warehouseField'}"
+						  [isRequired]="true"
+						  [label]="{ text: 'Warehouse' }" dataField="wareHouseId" editorType="dxLookup">
+				</dxi-item>
+				<dxi-item [colSpan]="2" [editorOptions]="{ dataSource: supplierStore, displayExpr: 'supplierName',
+					valueExpr: 'id', searchEnabled: true, searchExpr: ['code', 'supplierName'],
+					  fieldTemplate: 'supplierField', itemTemplate: 'supplierField'  }"
+						  [isRequired]="true"
+						  [label]="{ text: 'Supplier' }" dataField="supplierId" editorType="dxLookup">
+				</dxi-item>
+			</dxi-item>
+
+			<div *dxTemplate="let item of 'supplierField'">
+				<div>{{item?.code}} - {{item?.supplierName}}</div>
+			</div>
+
+			<div *dxTemplate="let item of 'warehouseField'">
+				<div>{{item?.code}} - {{item?.name}}</div>
+			</div>
+
+			<div *dxTemplate="let item of 'purchaseOrderField'">
+				<div>{{item?.poNumber}}</div>
+			</div>
+
+			<dxi-item [colSpan]="4" caption="GRN Items" itemType="group">
+				<dxi-item>
+					<dx-data-grid (onRowValidating)="onRowValidating($event)"
+								  [dataSource]="grn.goodReceivedNoteItems"
+								  [disabled]="grn.supplierId == 0"
+								  [rowAlternationEnabled]="true"
+								  (onEditorPreparing)="onEditorPreparing($event)"
+								  [showBorders]="true">
+						<dxo-editing
+							[allowAdding]="grn.id == 0"
+							[allowDeleting]="grn.id == 0"
+							[allowUpdating]="grn.id == 0"
+							mode="cell">
+						</dxo-editing>
+						<dxi-column caption="Product Name" dataField="productId">
+							<dxi-validation-rule message="Product is required" type="required"></dxi-validation-rule>
+							<dxo-lookup
+								[dataSource]="{ store: productStore, filter: [['supplierId', '=', grn.supplierId], ['active', '=', true]] }"
+								displayExpr="name"
+								valueExpr="id">
+							</dxo-lookup>
+						</dxi-column>
+						<dxi-column [width]="200" dataField="expiredDate" dataType="date" format="dd/MM/yyyy">
+						</dxi-column>
+						<dxi-column [width]="200" dataField="quantity" dataType="number">
+							<dxi-validation-rule message="Quantity is required" type="required"></dxi-validation-rule>
+						</dxi-column>
+						<dxi-column [width]="200" dataField="unitCost" dataType="number">
+							<dxi-validation-rule message="Unit Cost is required" type="required"></dxi-validation-rule>
+						</dxi-column>
+						<dxi-column [allowEditing]="false" [calculateCellValue]='calcualteTotal' [width]="200" alignment="right"
+									caption="Total" dataType="total" name="total"></dxi-column>
+						<dxo-summary>
+							<dxi-total-item
+								alignment="right"
+								column="quantity"
+								displayFormat="Quantity Total : {0}"
+								summaryType="sum">
+							</dxi-total-item>
+							<dxi-total-item
+								alignment="right"
+								column="total"
+								displayFormat="Total : {0}"
+								summaryType="sum">
+							</dxi-total-item>
+						</dxo-summary>
+					</dx-data-grid>
+				</dxi-item>
+			</dxi-item>
+
+			<dxi-item [buttonOptions]="{ text: 'Save Changes', useSubmitBehavior: true,
+										type: 'success', icon: 'save', class: 'btn-save-product',
+										visible: grn.id == 0 }" [colSpan]="4" class="btn-save-product"
+					  itemType="button">
+			</dxi-item>
+		</dx-form>
+	</form>
+
+
+</div>
